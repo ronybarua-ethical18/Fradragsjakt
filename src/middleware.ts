@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+'use client';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  const sessionToken = request.cookies.get("next-auth.session-token")?.value;
+  const sessionToken = request.cookies.get('next-auth.session-token')?.value;
 
   // Check if the token exists
   if (!sessionToken) {
-    return NextResponse.redirect(new URL("/login", request.url)); 
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
@@ -13,5 +14,5 @@ export async function middleware(request: NextRequest) {
 
 // Specify the paths you want to protect
 export const config = {
-  matcher: ["/transactions", "/users", "/customer"],
+  matcher: ['/transactions', '/users', '/customer/dashboard'],
 };

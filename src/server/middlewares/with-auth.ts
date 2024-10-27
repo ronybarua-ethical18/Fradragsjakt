@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
-import { middleware, publicProcedure } from "../trpc";
+import { TRPCError } from '@trpc/server';
+import { middleware, publicProcedure } from '../trpc';
 
 type User = {
   name?: string | null;
   email?: string | null;
   role?: string | null;
-} | null
+} | null;
 
 // Define a type for your context
 type Context = {
@@ -16,7 +16,7 @@ const withAuth = middleware(async ({ ctx, next }) => {
   const contextWithSession = ctx as Context;
 
   if (!contextWithSession.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
   return next({

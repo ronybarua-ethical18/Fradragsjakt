@@ -1,61 +1,112 @@
-'use client'; // Add this line
+import {
+  CircleUser,
+  Package,
+  Link,
+  Menu,
+  LineChart,
+  Badge,
+  Users,
+  ShoppingCart,
+  Package2,
+  Home,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+// import { ModeToggle } from "@/components/ui/mode-toggle";
+// import AdminSearch from "@/components/features/admin-search";
+import Search from './SearchInput';
+import { UpgradeCard } from './UpgradedCard';
 
-import * as React from 'react';
-import Image from 'next/image';
-
-function Header() {
-  return (
-    <>
-      <div className="flex flex-wrap gap-10 justify-between items-center px-32 whitespace-nowrap bg-indigo-950 max-md:px-5">
-        <div className="flex flex-col self-stretch my-auto text-xs font-medium leading-loose text-white w-[114px]">
-          <Image
-            src="/title.png"
-            alt="Description of image"
-            width={114}
-            height={24} // Adjust based on the actual aspect ratio
-            className="object-contain w-[114px]"
-          />
-
-          <div>Welcome</div>
+const Header = () => (
+  <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Toggle navigation menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <nav className="grid gap-2 text-lg font-medium bg-green-600">
+          <Link
+            href="#"
+            className="flex items-center gap-2 text-lg font-semibold"
+          >
+            <Package2 className="h-6 w-6" />
+            <span className="sr-only">Acme Inc</span>
+          </Link>
+          <Link
+            href="#"
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <Home className="h-5 w-5" />
+            Dashboard
+          </Link>
+          <Link
+            href="#"
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            Orders
+            <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+              6
+            </Badge>
+          </Link>
+          <Link
+            href="#"
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <Package className="h-5 w-5" />
+            Products
+          </Link>
+          <Link
+            href="#"
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <Users className="h-5 w-5" />
+            Customers
+          </Link>
+          <Link
+            href="#"
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <LineChart className="h-5 w-5" />
+            Analytics
+          </Link>
+        </nav>
+        <div className="mt-auto">
+          <UpgradeCard />
         </div>
-        <div className="flex gap-8 items-center self-stretch my-auto text-sm leading-none min-w-[240px] text-zinc-500 max-md:max-w-full">
-          <div className="flex flex-col self-stretch my-auto min-w-[240px] w-[322px]">
-            <div className="flex gap-2 items-start w-full bg-white">
-              <div className="flex flex-col flex-1 shrink w-full basis-0 min-w-[240px]">
-                <div className="flex gap-10 justify-between items-center px-3 py-2 w-full rounded-md border border-solid border-zinc-200">
-                  <div className="self-stretch my-auto">Search</div>
-
-                  <Image
-                    src="/Search.png"
-                    alt="Description of image"
-                    width={16} // width of 4 units (4*4 = 16px)
-                    height={16} // height of 16px to maintain the aspect ratio as square
-                    className="object-contain shrink-0 self-stretch my-auto"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <button className="flex items-center gap-8">
-            <Image
-              src="/Bell.png" // Replace with your icon path
-              alt="icon"
-              width={20}
-              height={20}
-            />
-          </button>
-
-          <Image
-            src="/Avatar.png"
-            alt="Description of image"
-            width={38}
-            height={38}
-            className="object-contain shrink-0 self-stretch py-2.5 my-auto"
-          />
-        </div>
-      </div>
-    </>
-  );
-}
+      </SheetContent>
+    </Sheet>
+    <div className="w-full flex-1 justify-end">
+      <Search className={''} />
+    </div>
+    {/* <ModeToggle /> */}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary" size="icon" className="rounded-full">
+          <CircleUser className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuItem>Support</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Logout</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  </header>
+);
 
 export default Header;

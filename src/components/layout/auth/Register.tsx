@@ -1,16 +1,16 @@
 // src/components/layout/auth/Register.tsx
-"use client";
-import { useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+'use client';
+import { useSession } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 // import QuestionariesModal from "@/components/QuestionariesModal";
-import { FormInput } from "@/components/FormInput";
-import { trpc } from "@/utils/trpc"; // Adjust the import according to your project structure
-import toast from "react-hot-toast";
-import { FcGoogle } from "react-icons/fc";
-import Link from "next/link";
+import { FormInput } from '@/components/FormInput';
+import { trpc } from '@/utils/trpc'; // Adjust the import according to your project structure
+import toast from 'react-hot-toast';
+import { FcGoogle } from 'react-icons/fc';
+import Link from 'next/link';
 
 type FormData = {
   firstName: string;
@@ -29,13 +29,13 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null); // State to track error
 
   useEffect(() => {
-    if (session?.user) router.push("/customer");
+    if (session?.user) router.push(`/${session?.user?.role}/dashboard`);
   }, [session, router]);
 
   const mutation = trpc.auth.signup.useMutation({
     onSuccess: () => {
       toast.success(
-        "Email verification link has been sent to your email please check",
+        'Email verification link has been sent to your email please check',
         {
           duration: 4000, // Duration in milliseconds
         }
@@ -45,7 +45,7 @@ export default function Register() {
       // router.push("/login"); // Redirect to login page after successful registration
     },
     onError: (error) => {
-      setError(error.message || "Failed to register. Please try again.");
+      setError(error.message || 'Failed to register. Please try again.');
     },
   });
 
@@ -59,7 +59,7 @@ export default function Register() {
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md text-center">
         {/* <QuestionariesModal /> */}
         <h2 className="text-2xl font-bold text-center">Sign Up</h2>
-        {error && <p className="text-red-500">{error}</p>}{" "}
+        {error && <p className="text-red-500">{error}</p>}{' '}
         {/* Display error message */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex space-x-2">
@@ -107,8 +107,8 @@ export default function Register() {
             type="select"
             placeholder="Select Role"
             options={[
-              { title: "Auditor", value: "auditor" },
-              { title: "Customer", value: "customer" },
+              { title: 'Auditor', value: 'auditor' },
+              { title: 'Customer', value: 'customer' },
             ]}
             required
           />
@@ -137,7 +137,7 @@ export default function Register() {
           </span>
         </Button>
         <p className="text-sm text-[#71717A] font-medium">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link href="/login" className="text-[#00104B]">
             Sign In
           </Link>

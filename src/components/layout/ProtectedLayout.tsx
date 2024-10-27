@@ -1,46 +1,59 @@
 'use client';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react'; // Import session hook
-// import Search from '../Search';
-// import ProfileDropdown from '../Dropdown';
+import ProfileDropdown from '../Dropdown';
 import Sidebar from '../Sidebar';
-// import MobileNav from '../MobileNav';
+import MobileNav from '../MobileNav';
 import { useRouter } from 'next/navigation';
-import DashboardItem1 from './DashboardItem1';
-import ExpenseIcons from './ExpenseIcons';
-import DashboardItem2 from './DashboardItem2';
+import Loading from '@/app/loading';
+import Link from 'next/link';
+import CompanyLogo from '../CompanyLogo';
+import { BellDot } from 'lucide-react';
+import SearchInput from '../SearchInput';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 
-export default function ProtectedLayout({}: ProtectedLayoutProps) {
-  const { status } = useSession();
+export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
+  const { data: user, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'loading') return; // Prevent redirect while session is loading
-    if (status !== 'authenticated') {
-      router.push('/login'); // Redirect to login if no user found
+    if (!user || status !== 'authenticated') {
+      router.push('/login');
     }
-  }, [status, router]);
-
-  if (status === 'loading') {
-    return <p>Loading...</p>; // Optional loading state
-  }
+    if (status === 'loading') return;
+  }, [status, router, user]);
 
   return (
-    <div className="flex mx-[128px] bg-[var(--select-box,#EEF0F4)]">
-      <div className="flex flex-col justify-between items-center w-[270px] h-[812px] p-[48px] pt-[48px] pb-[16px] rounded-b-[16px] border border-[#EEF0F4] bg-white">
-        <Sidebar role="customer" />
+    <>
+      {status === 'loading' && (
+        <Loading size="extra_large"> Loading...</Loading>
+      )}
+      <div className="h-screen w-full overflow-hidden">
+        <header className="flex bg-[#00104B] justify-between h-14 items-center px-7  lg:h-[60px] lg:px-[128px]">
+          <MobileNav role={user?.user?.role || ''} />
+          <div className="hidden md:flex items-center ">
+            <Link href="/" className="">
+              <CompanyLogo />
+              <p className="text-xs text-white font-medium">Welcome</p>
+            </Link>
+          </div>
+          <div className="flex items-center space-x-8">
+            <SearchInput className="hidden md:block" />
+            <BellDot size={24} color="#FFFF" />
+            <ProfileDropdown />
+          </div>
+        </header>
+
+        <div className="grid bg-[#EEF0F4]  h-[calc(100vh-60px)] gap-8 w-full md:grid-cols-[250px_1fr] lg:grid-cols-[250px_1fr] px-8 lg:px-[128px]">
+          <Sidebar role={user?.user?.role || ''} />
+          <main className="flex-1 bg-white overflow-y-auto mt-6 lg:mt-8 [&::-webkit-scrollbar]:hidden">
+            {children}
+          </main>
+        </div>
       </div>
-      <div className="pl-[8px] pt-[32px]">
-        <DashboardItem1 />
-      </div>
-      <div className="pt-[32px]">
-        <DashboardItem2 />
-      </div>
-      <ExpenseIcons />
-    </div>
+    </>
   );
 }

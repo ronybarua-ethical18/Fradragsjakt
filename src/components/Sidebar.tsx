@@ -1,208 +1,147 @@
-import React, { useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { FiMenu } from 'react-icons/fi'; // Import a menu icon
+import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
+import { menuConfig } from '@/utils/dummy';
+import HelpAskingCard from './HelpAskingCard';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from './ui/accordion';
+import { usePathname } from 'next/navigation';
+import { Dot } from 'lucide-react';
 
-// Define the type for a menu item
+type MenuItem = {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  badge?: number;
+  subItems?: MenuItem[];
+};
 
-// Define the type for menuConfig based on roles
+type MenuConfig = {
+  [role: string]: MenuItem[];
+};
 
 interface SidebarProps {
   role: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({}) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
+const Sidebar: React.FC<SidebarProps> = ({ role }) => {
+  const pathname = usePathname();
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const menuItems: MenuItem[] = useMemo(
+    () => (menuConfig as MenuConfig)[role] || [],
+    [role]
+  );
+
+  const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (menuRef.current) {
+      const activeLink = menuRef.current.querySelector('.active');
+      activeLink?.scrollIntoView({ block: 'nearest' });
+    }
+
+    const currentMenu = menuItems.find((item) => pathname.includes(item.href));
+    if (currentMenu) {
+      setSelectedMenu(currentMenu.href);
+    }
+  }, [pathname, menuItems]);
+
+  const handleMenuClick = (href: string) => {
+    setSelectedMenu(href);
   };
 
   return (
-    <div className="flex h-full">
-      {/* Menu button for mobile */}
-      <div className="block lg:hidden p-2">
-        <button
-          onClick={toggleSidebar}
-          className="text-2xl p-2 bg-indigo-500 text-white rounded-lg"
-          aria-label="Open menu"
-        >
-          <FiMenu />
-        </button>
-      </div>
-
-      {/* Sidebar */}
-      <div
-        className={`${
-          isSidebarOpen ? 'block' : 'hidden'
-        } fixed top-0 left-0 w-64 h-full bg-white z-50 lg:relative lg:flex lg:flex-col transition-all`}
-      >
-        <div className="flex flex-col w-full text-sm font-semibold leading-none">
-          {/* Dashboard Section */}
-          <Link
-            href="/"
-            className="flex gap-2 items-center p-2 w-full bg-white rounded-lg min-h-[36px] text-stone-950"
-          >
-            <Image
-              src="/Dashboard.png"
-              alt="Dashboard Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-            <span className="flex-1">Dashboard</span>
-          </Link>
-
-          {/* Expense Section */}
-          <Link
-            href="/expense"
-            className="flex flex-col mt-2 w-full font-medium whitespace-nowrap"
-          >
-            <div className="flex gap-2 items-center px-2 py-1.5 w-full text-white bg-indigo-500 rounded-lg">
-              <Image
-                src="/Expense.png"
-                alt="Expense Icon"
-                width={20}
-                height={20}
-                className="object-contain shrink-0 self-stretch my-auto"
-              />
-              <span className="flex-1">Expense</span>
-              <Image
-                src="/DownArrow.png"
-                alt="Arrow Icon"
-                width={20}
-                height={20}
-                className="object-contain shrink-0 self-stretch my-auto"
-              />
-            </div>
-          </Link>
-          <Link
-            href="/expense/categories"
-            className="flex gap-2 items-center px-2 py-1.5 w-full bg-white rounded-lg text-zinc-500"
-          >
-            <Image
-              src="/Category.png"
-              alt="Category Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-
-            <div className="flex-1">Categories</div>
-          </Link>
-
-          {/* Rule Section */}
-          <Link
-            href="/rule"
-            className="flex gap-2 items-center px-2 py-1.5 mt-2 w-full whitespace-nowrap bg-white rounded-lg text-stone-950"
-          >
-            <Image
-              src="/Rule.png"
-              alt="Rule Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-            <span className="flex-1">Rule</span>
-          </Link>
-
-          {/* Deductions Section */}
-          <Link
-            href="/deductions"
-            className="flex gap-2 items-center px-2 py-1.5 mt-2 w-full bg-white rounded-lg text-zinc-500"
-          >
-            <Image
-              src="/Deductions.png"
-              alt="Deductions Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-            <span className="flex-1">Deductions</span>
-            <Image
-              src="/DownArrowBlack.png"
-              alt="Arrow Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-          </Link>
-
-          {/* Tax File Section */}
-          <Link
-            href="/tax-file"
-            className="flex gap-2 items-center p-2 mt-2 w-full bg-white rounded-lg min-h-[36px] text-stone-950"
-          >
-            <Image
-              src="/TaxFile.png"
-              alt="Tax File Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-            <span className="flex-1">Tax file</span>
-          </Link>
-
-          {/* Write-offs Section */}
-          <Link
-            href="/write-offs"
-            className="flex gap-2 items-center p-2 mt-2 w-full whitespace-nowrap bg-white rounded-lg min-h-[36px] text-stone-950"
-          >
-            <Image
-              src="/WriteOff.png"
-              alt="Write-offs Icon"
-              width={20}
-              height={20}
-              className="object-contain shrink-0 self-stretch my-auto"
-            />
-            <span className="flex-1">Write-offs</span>
-          </Link>
-        </div>
-
-        {/* Help Section */}
-        <div className="flex flex-col mt-52 w-full">
-          <div className="flex flex-col items-center px-6 py-6 w-full bg-indigo-50 rounded-2xl min-h-[213px]">
-            <Image
-              src="/Expert.png"
-              alt="Expert Icon"
-              width={51}
-              height={51}
-              className="object-contain aspect-square"
-            />
-            <div className="flex flex-col mt-6 w-full max-w-[165px]">
-              <div className="flex flex-col items-center self-center text-zinc-500">
-                <div className="text-sm font-semibold leading-none">
-                  Need help?
-                </div>
-                <div className="text-xs leading-loose">
-                  Please check your docs
-                </div>
-              </div>
-              <Link
-                href="/documentation"
-                className="flex gap-2.5 justify-center items-center px-4 py-1.5 mt-4 w-full text-sm font-medium leading-6 text-white whitespace-nowrap bg-indigo-500 rounded-md min-h-[36px]"
+    <div
+      ref={menuRef}
+      className="hidden md:block w-[250px] max-h-[calc(100vh-56px)] px-4 py-12 bg-white border border-[#EEF0F4] rounded-b-lg"
+    >
+      <div className="flex flex-col h-full justify-between">
+        <nav className="grid items-start text-sm font-medium gap-2">
+          {menuItems.map(({ href, label, icon: Icon, badge, subItems }) =>
+            subItems ? (
+              <Accordion
+                type="single"
+                collapsible
+                className="space-y-4"
+                key={label}
               >
-                <Image
-                  src="/Documentation.png"
-                  alt="Documentation Icon"
-                  width={20}
-                  height={20}
-                  className="object-contain shrink-0 self-stretch my-auto"
+                <AccordionItem value={label} className="border-none">
+                  <AccordionTrigger className="flex hover:hover:no-underline text-[#71717A] justify-between items-center p-2 rounded-lg hover:bg-violet-100">
+                    <span className="flex items-center">
+                      <Icon className="mr-2 h-[20px] w-[20px] text-[#71717A]" />
+                      {label}
+                    </span>
+                    {badge && (
+                      <Badge className="ml-auto flex h-6 w-6 border-red-700 shrink-0 items-center justify-center rounded-full">
+                        {badge}
+                      </Badge>
+                    )}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="ml-4 space-y-2 mt-2">
+                      {subItems.map(({ href: subHref, label: subLabel }) => (
+                        <Link
+                          href={'#'}
+                          key={subLabel}
+                          onClick={() => handleMenuClick(subHref)}
+                          className={cn(
+                            'pl-4 py-1 flex items-center text-sm  rounded-md transition-colors duration-200 w-full text-left hover:bg-violet-100',
+                            selectedMenu === subHref
+                              ? 'bg-[#5B52F9] text-white'
+                              : 'text-gray-600'
+                          )}
+                        >
+                          <span className="flex items-center">
+                            <Dot />
+                            <p>{subLabel}</p>
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ) : (
+              <Link
+                key={href}
+                href={'#'}
+                onClick={() => handleMenuClick(href)}
+                className={cn(
+                  'flex items-center gap-3 rounded-lg px-3 hover:bg-violet-100 py-2 text-muted-foreground transition-all hover:text-primary w-full text-left',
+                  selectedMenu === href ? 'bg-[#5B52F9] text-white' : ''
+                )}
+              >
+                <Icon
+                  className={cn(
+                    'h-[20px] w-[20px] text-[#71717A]',
+                    selectedMenu === href && 'text-white'
+                  )}
                 />
-                <span className="self-stretch my-auto">Documentation</span>
+                <span
+                  className={cn(
+                    'font-semibold text-sm text-[#71717A]',
+                    selectedMenu === href && 'text-white'
+                  )}
+                >
+                  {label}
+                </span>
+                {badge && (
+                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                    {badge}
+                  </Badge>
+                )}
               </Link>
-            </div>
-          </div>
-        </div>
+            )
+          )}
+        </nav>
+        <HelpAskingCard />
       </div>
-
-      {/* Overlay for closing sidebar on mobile */}
-      {isSidebarOpen && (
-        <div
-          onClick={toggleSidebar}
-          className="fixed inset-0 bg-black opacity-50 lg:hidden"
-        ></div>
-      )}
     </div>
   );
 };

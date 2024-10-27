@@ -1,4 +1,3 @@
-// app/signin/page.tsx
 'use client';
 import { signIn, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
@@ -9,15 +8,19 @@ import toast from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Loader2 } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { status } = useSession(); // Track session loading state
+  const { data: user, status } = useSession(); // Track session state
+
+  const [loading, setLoading] = useState(false); // Local loading state
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); // Start loader
     const result = await signIn('credentials', {
       redirect: false,
       email,
@@ -27,21 +30,16 @@ export default function Login() {
     if (result?.error) {
       toast.error(result.error, { duration: 4000 });
     } else {
-      toast.success('Login Successful', { duration: 2000 });
-      router.push('/customer/dashboard'); // Redirect after successful login
+      toast.success('Login Successful', { duration: 1000 });
     }
+    setLoading(false); // Stop loader
   };
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/customer/dashboard'); // Redirect if already authenticated
+      router.push(`/${user?.user.role}/dashboard`); // Redirect if already authenticated
     }
-  }, [status, router]);
-
-  if (status === 'loading') {
-    // Optional: Loading state until session is verified
-    return <p>Loading...</p>;
-  }
+  }, [status, router, user]);
 
   return (
     <div className="flex items-center text-black justify-center h-screen bg-gray-100">
@@ -80,7 +78,12 @@ export default function Login() {
               required
             />
           </div>
-          <Button type="submit" className="w-full text-white">
+          <Button
+            disabled={loading || status === 'loading'} // Disable button during loading
+            type="submit"
+            className="w-full text-white"
+          >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
         </form>

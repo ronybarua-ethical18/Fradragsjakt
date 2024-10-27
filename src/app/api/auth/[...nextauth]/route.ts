@@ -21,6 +21,7 @@ declare module 'next-auth' {
 }
 
 export const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       id: 'credentials',
@@ -133,6 +134,7 @@ export const authOptions: AuthOptions = {
         firstName: (token.firstName as string) || token.name || '',
         lastName: (token.lastName as string) || '',
       };
+
       return session;
     },
   },
