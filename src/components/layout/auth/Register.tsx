@@ -1,6 +1,6 @@
 // src/components/layout/auth/Register.tsx
 'use client';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -128,7 +128,7 @@ export default function Register() {
         {/* Google Sign In Button */}
         <Button
           variant="outline"
-          // onClick={() => signIn("google")}
+          onClick={() => signIn('google')}
           className="w-full flex items-center justify-center"
         >
           <FcGoogle className="text-lg" />

@@ -43,6 +43,9 @@ export const authOptions: AuthOptions = {
         if (!user) {
           throw new Error('User not found');
         }
+        if (user && !user?.isVerified) {
+          throw new Error('Please verify your email first!');
+        }
 
         if (user) {
           const isPasswordCorrect = await bcrypt.compare(

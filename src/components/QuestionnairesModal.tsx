@@ -59,7 +59,7 @@ export default function QuestionnairesModal({
       {
         onSuccess: () => {
           setIsOpen(false);
-          toast.success('Questionnaires updated successfully!');
+          toast.success('Congrats! you have successfully onboarded');
         },
         onError: (error) => {
           console.error('Failed to update questionnaires:', error);
