@@ -7,26 +7,28 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 // import QuestionariesModal from "@/components/QuestionariesModal";
 import { FormInput } from '@/components/FormInput';
-import { trpc } from '@/utils/trpc'; // Adjust the import according to your project structure
+import { trpc } from '@/utils/trpc';
 import toast from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
+import CompanyLogo from '@/components/CompanyLogo';
 
 type FormData = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  role: string;
+  /* role: string; */
 };
 
-export default function Register() {
+export default function SignUp() {
   const { data: session } = useSession();
-  console.log(session);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
   const { handleSubmit, control, reset } = useForm<FormData>();
-  const [error, setError] = useState<string | null>(null); // State to track error
 
   useEffect(() => {
     if (session?.user) router.push(`/${session?.user?.role}/dashboard`);
@@ -35,35 +37,41 @@ export default function Register() {
   const mutation = trpc.auth.signup.useMutation({
     onSuccess: () => {
       toast.success(
-        'Email verification link has been sent to your email please check',
+        'Email verification link has been sent to your email. Please check.',
         {
-          duration: 4000, // Duration in milliseconds
+          duration: 4000,
         }
       );
-
-      reset(); // Reset form after successful submission
-      // router.push("/login"); // Redirect to login page after successful registration
+      reset();
+      setLoading(false); // Reset loading state on success
     },
     onError: (error) => {
       setError(error.message || 'Failed to register. Please try again.');
+      setLoading(false); // Reset loading state on error
     },
   });
 
   const onSubmit = (data: FormData) => {
     setError(null); // Reset error state before submission
-    mutation.mutate(data); // Call the tRPC mutation
+    setLoading(true); // Start loading state
+    console.log(data);
+
+    mutation.mutate(data);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md text-center">
-        {/* <QuestionariesModal /> */}
-        <h2 className="text-2xl font-bold text-center">Sign Up</h2>
-        {error && <p className="text-red-500">{error}</p>}{' '}
-        {/* Display error message */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="flex flex-col space-y-8 items-center text-black justify-center h-screen bg-gray-100">
+      <CompanyLogo color="#5B52F9" height="32" width="152" />
+
+      <div className="w-full max-w-md p-8 space-y-6 text-center bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold">Sign up </h2>
+          <p className="text-sm">Create a new account</p>
+        </div>
+        {error && <p className="text-red-500">{error}</p>}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="flex space-x-2">
-            {/* First Name */}
             <FormInput
               name="firstName"
               control={control}
@@ -71,8 +79,6 @@ export default function Register() {
               placeholder="First Name"
               required
             />
-
-            {/* Last Name */}
             <FormInput
               name="lastName"
               control={control}
@@ -82,7 +88,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Email */}
           <FormInput
             name="email"
             control={control}
@@ -91,7 +96,6 @@ export default function Register() {
             required
           />
 
-          {/* Password */}
           <FormInput
             name="password"
             control={control}
@@ -100,8 +104,7 @@ export default function Register() {
             required
           />
 
-          {/* Role (Select) */}
-          <FormInput
+          {/* <FormInput
             name="role"
             control={control}
             type="select"
@@ -111,21 +114,26 @@ export default function Register() {
               { title: 'Customer', value: 'customer' },
             ]}
             required
-          />
+          /> */}
 
-          {/* Submit Button */}
-          <Button type="submit" className="w-full text-white">
+          <Button
+            type="submit"
+            className="w-full text-white"
+            disabled={loading}
+          >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign Up
           </Button>
         </form>
+
         <div className="flex items-center justify-between">
-          <span className="border-t w-full   inline-block"></span>
-          <span className="px-4 min-w-[145px] text-gray-500">
+          <span className="border-t w-full inline-block"></span>
+          <span className="px-4 min-w-[155px] text-gray-500">
             or continue with
           </span>
           <span className="border-t w-full inline-block"></span>
         </div>
-        {/* Google Sign In Button */}
+
         <Button
           variant="outline"
           onClick={() => signIn('google')}
@@ -136,6 +144,7 @@ export default function Register() {
             Google
           </span>
         </Button>
+
         <p className="text-sm text-[#71717A] font-medium">
           Already have an account?{' '}
           <Link href="/login" className="text-[#00104B]">
