@@ -5,8 +5,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Control, Controller } from "react-hook-form";
+} from '@/components/ui/select';
+import { Control, Controller } from 'react-hook-form';
 
 type Option = {
   title: string;
@@ -15,7 +15,7 @@ type Option = {
 
 export interface FormInputProps {
   name: string;
-  type: "text" | "email" | "password" | "select";
+  type: 'text' | 'email' | 'password' | 'select';
   placeholder?: string;
   options?: Option[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,12 +25,12 @@ export interface FormInputProps {
 export function FormInput({
   name,
   placeholder,
-  type = "text",
+  type = 'text',
   options = [],
   control,
   required = false,
 }: FormInputProps) {
-  if (type === "select") {
+  if (type === 'select') {
     return (
       <Controller
         name={name}
@@ -66,7 +66,7 @@ export function FormInput({
           {...field}
           type={type}
           placeholder={placeholder}
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-2 border border-gray-300  text-sm placeholder:text-muted-foreground rounded-md"
           required={required}
         />
       )}

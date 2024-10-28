@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// /server/utils/context.ts
-
-// import { getSession } from "next-auth/react";
-import { getToken } from "next-auth/jwt";
-import { inferAsyncReturnType } from "@trpc/server";
-import connectToDatabase from "./config/mongoose";
-import mongoose from "mongoose";
+import { inferAsyncReturnType } from '@trpc/server';
+import connectToDatabase from './config/mongoose';
+import mongoose from 'mongoose';
+import { getToken } from 'next-auth/jwt';
+import { NextApiRequest } from 'next';
 
 // Define the type for the incoming request
 interface CreateContextOptions {
@@ -14,26 +11,35 @@ interface CreateContextOptions {
 
 export const createContext = async ({ req }: CreateContextOptions) => {
   // Convert the Request object to a compatible type for NextAuth functions
-  const compatibleReq: any = {
-    headers: Object.fromEntries(req.headers),
+  const cookies = Object.fromEntries(
+    req.headers
+      .get('cookie')
+      ?.split('; ')
+      .map((c) => c.split('=')) || []
+  );
+
+  const transformedReq = {
+    headers: {
+      ...Object.fromEntries(req.headers),
+      cookie: req.headers.get('cookie') || '',
+    },
+    cookies,
     method: req.method,
     url: req.url,
-    // Note: body is typically not needed for session/token retrieval
-  };
-
-  // // Get the user session from the request
-  // const session = await getSession({ req: compatibleReq });
+  } as unknown as NextApiRequest;
 
   // Use getToken to retrieve the JWT token
-  const token = await getToken({ req: compatibleReq });
+  const token = await getToken({
+    req: transformedReq,
+  });
 
   // Connect to the database
   await connectToDatabase();
 
   return {
-    user: token?.user || null, // Session user or null
-    token: token || null,        // JWT token or null
-    db: mongoose.connection,     // Database connection
+    user: token || null,
+    token: token || null,
+    db: mongoose.connection,
   };
 };
 

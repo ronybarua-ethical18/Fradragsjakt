@@ -1,12 +1,13 @@
-import NextAuth, { AuthOptions } from "next-auth";
-import { Account, User as AuthUser, Profile } from "next-auth";
-import bcrypt from "bcrypt";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import connectToDatabase from "@/server/config/mongoose";
-import User from "@/server/db/models/user";
+import NextAuth, { AuthOptions, Session } from 'next-auth';
+import { Account, User as AuthUser, Profile } from 'next-auth';
+import bcrypt from 'bcrypt';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import connectToDatabase from '@/server/config/mongoose';
+import User from '@/server/db/models/user';
+import { JWT } from 'next-auth/jwt';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface User {
     id: string; // Include your user ID type
     role: string; // Include your user role type
@@ -20,31 +21,36 @@ declare module "next-auth" {
 }
 
 export const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      id: "credentials",
-      name: "Credentials",
+      id: 'credentials',
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         // Type the credentials parameter correctly
         if (!credentials || !credentials.email || !credentials.password) {
-          throw new Error("Invalid credentials");
+          throw new Error('Invalid credentials');
         }
-
-        console.log("credentials", credentials);
 
         await connectToDatabase();
         const user = await User.findOne({ email: credentials.email });
 
         // If user does not exist, log and return null
         if (!user) {
-          throw new Error("User not found");
+          throw new Error('User not found');
+        }
+        if (user && !user?.isVerified) {
+          throw new Error('Please verify your email first!');
         }
 
         if (user) {
+          if (credentials.password === user.password) {
+            return user;
+          }
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password
@@ -57,15 +63,16 @@ export const authOptions: AuthOptions = {
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
   ],
+
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   session: {
-    strategy: "jwt", // Use JWT instead of sessions
+    strategy: 'jwt', // Use JWT instead of sessions
   },
   callbacks: {
     async signIn({
@@ -76,26 +83,32 @@ export const authOptions: AuthOptions = {
       account: Account | null;
       profile?: Profile | undefined;
     }): Promise<boolean> {
-      if (account?.provider === "google") {
+      if (account?.provider === 'google') {
         await connectToDatabase();
+
+        console.log('google account user', user);
         try {
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
             const newUser = new User({
               email: user.email,
-              name: user.name,
-              provider: "google",
+              firstName: user.name,
+              lastName: user.name,
+              role: 'customer',
+              provider: 'google',
+              image: user?.image || '',
+              isVerified: true,
             });
             await newUser.save();
           }
           return true;
         } catch (err) {
-          console.error("Error saving user during Google sign-in", err);
+          console.error('Error saving user during Google sign-in', err);
           return false;
         }
       }
 
-      if (account?.provider === "credentials") {
+      if (account?.provider === 'credentials') {
         return true; // Credentials are already verified
       }
 
@@ -103,27 +116,31 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, user }) {
       // Attach user information to the JWT token
-
-      console.log("user", user);
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.firstName = user.firstName;
+        token.firstName = user.firstName || user.name;
         token.lastName = user.lastName;
-        token.role = user.role;
+        token.role = user.role || 'customer';
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT;
+    }): Promise<Session> {
       // Attach user info to the session object
-      if (!session.user) {
-        session.user = {};
-      }
-      session.user = token.id;
-      session.role = token.role;
-      session.email = token.email;
-      session.firstName = token.firstName;
-      session.lastName = token.lastName;
+      session.user = {
+        id: token.id as string,
+        role: (token.role as string) || 'customer',
+        email: token.email as string,
+        firstName: (token.firstName as string) || token.name || '',
+        lastName: (token.lastName as string) || '',
+      };
+
       return session;
     },
   },

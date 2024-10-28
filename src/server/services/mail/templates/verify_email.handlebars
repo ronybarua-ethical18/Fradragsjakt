@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Your Email</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      padding: 12px 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 608px;
+    }
+    .text-center {
+      text-align: center;
+      color: #000;
+    }
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+    .btn-verify {
+      background-color: #5B52F9;
+      color: white;
+      padding: 10px;
+      width: 350px;
+      max-width: 500px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-verify:hover {
+      background-color: #1c3faa;
+    }
+    .footer {
+      color: #64748B;
+      font-weight: 500;
+      text-align: center;
+    }
+    .social-links a {
+      margin: 0 8px;
+      text-decoration: none;
+    }
+    .footer p {
+      margin: 8px 0;
+    }
+    .footer-small {
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <img src="{{logoUrl}}" alt="Company Logo" width="152" height="32"/>
+
+  <!-- Main Content -->
+  <div class="text-center space-y-6">
+    <h1 class="text-[28px] font-semibold">Verify your email</h1>
+    <p class="text-sm">
+      Please click the button below to verify your email address.
+    </p>
+
+    <!-- Verify Button -->
+    <a href="{{token}}" class="btn-verify">Verify your email</a>
+  </div>
+
+  <!-- Footer with Social Links -->
+  <div class="footer space-y-4">
+    <div class="social-links">
+      <a href="{{facebookUrl}}">
+        <img src="{{facebookIconUrl}}" alt="Facebook" width="30" height="30"/>
+      </a>
+      <a href="{{linkedinUrl}}">
+        <img src="{{linkedinIconUrl}}" alt="LinkedIn" width="30" height="30"/>
+      </a>
+      <a href="{{instagramUrl}}">
+        <img src="{{instagramIconUrl}}" alt="Instagram" width="30" height="30"/>
+      </a>
+    </div>
+
+    <p class="text-xs">Copyright © 2023 Fradragsjakt. All rights reserved.</p>
+
+    <p class="footer-small">
+      Invoiceflow is a growing invoice solution system. It gives clients the freedom to manage vendors and finances easily, anywhere, anytime.
+    </p>
+  </div>
+</body>
+</html>
