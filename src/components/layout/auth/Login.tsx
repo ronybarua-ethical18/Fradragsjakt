@@ -9,6 +9,7 @@ import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2 } from 'lucide-react';
+import CompanyLogo from '@/components/CompanyLogo';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -42,7 +43,8 @@ export default function Login() {
   }, [status, router, user]);
 
   return (
-    <div className="flex items-center text-black justify-center h-screen bg-gray-100">
+    <div className="flex flex-col space-y-8 items-center text-black justify-center h-screen bg-gray-100">
+      <CompanyLogo color="#5B52F9" height="32" width="152" />
       <div className="w-full max-w-md p-8 space-y-6 text-center bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h2 className="text-[28px] font-semibold">Welcome Back</h2>
@@ -100,7 +102,7 @@ export default function Login() {
 
         <div className="flex items-center justify-between">
           <span className="border-t w-full inline-block"></span>
-          <span className="px-4 min-w-[145px] text-gray-500">
+          <span className="px-4 min-w-[155px] text-gray-500">
             or continue with
           </span>
           <span className="border-t w-full inline-block"></span>
@@ -117,8 +119,8 @@ export default function Login() {
           </span>
         </Button>
         <p className="text-sm text-[#71717A] font-medium">
-          Don’t have an account{' '}
-          <Link href="/register" className="text-[#00104B]">
+          Don’t have an account?{' '}
+          <Link href="/signup" className="text-[#00104B]">
             Sign up
           </Link>
         </p>

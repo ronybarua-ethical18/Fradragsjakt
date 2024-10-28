@@ -1,10 +1,10 @@
 import React from 'react';
 
-const CompanyLogo = ({ color = 'white' }) => {
+const CompanyLogo = ({ color = 'white', width = '114', height = '24' }) => {
   return (
     <svg
-      width="114"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 114 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

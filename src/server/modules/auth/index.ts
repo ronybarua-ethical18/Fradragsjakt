@@ -13,7 +13,7 @@ export const authRouter = router({
   signup: publicProcedure
     .input(authValidation.signupSchema) // Validate input with Zod schema
     .mutation(async ({ input }) => {
-      const { email, password, firstName, lastName, role } = input;
+      const { email, password, firstName, lastName /* role */ } = input;
 
       // Check if user already exists
       const existingUser = await User.findOne({ email });
@@ -30,7 +30,7 @@ export const authRouter = router({
         password: hashedPassword,
         firstName,
         lastName,
-        role,
+        /* role, */
       });
 
       await newUser.save(); // Save user to the database
@@ -100,8 +100,9 @@ export const authRouter = router({
 
       return {
         message: 'Email verified successfully.',
-        alreadyVerified: false,
         status: 200,
+        alreadyVerified: false,
+        data: user,
       };
     }),
 });

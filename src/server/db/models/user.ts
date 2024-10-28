@@ -21,7 +21,8 @@ const UserSchema: Schema = new Schema<IUser>(
     role: {
       type: String,
       enum: ['admin', 'auditor', 'customer'],
-      required: true,
+      default: 'customer',
+      //required: true,
     },
     image: {
       type: String,

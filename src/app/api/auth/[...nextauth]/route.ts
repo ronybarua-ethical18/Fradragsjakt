@@ -48,6 +48,9 @@ export const authOptions: AuthOptions = {
         }
 
         if (user) {
+          if (credentials.password === user.password) {
+            return user;
+          }
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password

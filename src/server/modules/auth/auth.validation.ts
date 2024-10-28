@@ -5,6 +5,7 @@ const signupSchema = z.object({
   password: z.string().min(6), // Validate password length
   firstName: z.string().min(1), // Validate first name
   lastName: z.string().min(1), // Validate last name
-  role: z.string(),
+  /*   role: z.string(),
+   */
 });
 export const authValidation = { signupSchema };
