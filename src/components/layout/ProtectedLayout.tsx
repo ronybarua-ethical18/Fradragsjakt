@@ -49,7 +49,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
 
         <div className="grid bg-[#EEF0F4]  h-[calc(100vh-60px)] gap-8 w-full md:grid-cols-[250px_1fr] lg:grid-cols-[250px_1fr] px-8 lg:px-[128px]">
           <Sidebar role={user?.user?.role || ''} />
-          <main className="flex-1 bg-white overflow-y-auto mt-6 lg:mt-8 [&::-webkit-scrollbar]:hidden">
+          <main className="flex-1 overflow-y-auto mt-6 lg:mt-8 [&::-webkit-scrollbar]:hidden">
             {children}
           </main>
         </div>

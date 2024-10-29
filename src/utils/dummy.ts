@@ -1,3 +1,11 @@
+import ClothingImg from '../../public/images/expenses/clothing.png';
+import TravelImg from '../../public/images/expenses/travel.png';
+import TransportImg from '../../public/images/expenses/transport.png';
+import GasImg from '../../public/images/expenses/gas.png';
+import MealsImg from '../../public/images/expenses/meals.png';
+import SuppliesImg from '../../public/images/expenses/supplies.png';
+import InsuranceImg from '../../public/images/expenses/insurance.png';
+
 import {
   LayoutDashboard,
   HandCoins,
@@ -106,3 +114,55 @@ export const menuConfig = {
     },
   ],
 };
+
+export const expenseType = [
+  {
+    id: 1,
+    imageSrc: ClothingImg,
+    type: 'Clothing',
+    quantity: 15,
+    amount: 500,
+  },
+  {
+    id: 2,
+    imageSrc: TravelImg,
+    type: 'Travel',
+    quantity: 20,
+    amount: 500,
+  },
+  {
+    id: 3,
+    imageSrc: TransportImg,
+    type: 'Transport',
+    quantity: 25,
+    amount: 500,
+  },
+  {
+    id: 4,
+    imageSrc: GasImg,
+    type: 'Gas',
+    quantity: 40,
+    amount: 500,
+  },
+  {
+    id: 5,
+    imageSrc: MealsImg,
+    type: 'Meals',
+    quantity: 15,
+    amount: 500,
+  },
+  {
+    id: 6,
+    imageSrc: SuppliesImg,
+    type: 'Supplies',
+    quantity: 35,
+    amount: 500,
+  },
+  {
+    id: 7,
+    imageSrc: InsuranceImg,
+    type: 'Insurance',
+    quantity: 40,
+    amount: 500,
+  },
+];
