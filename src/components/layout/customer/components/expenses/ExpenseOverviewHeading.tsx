@@ -9,6 +9,7 @@ import RuleIcon from '../../../../../../public/images/expenses/rule.png';
 import WriteOffIcon from '../../../../../../public/images/expenses/writeoff.png';
 import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
+import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -34,6 +35,8 @@ function ExpenseOverviewHeading() {
       <ExpenseAddContent />
     ) : modalContent.title === 'Rule' ? (
       <ExpenseRuleUpdateOrCreateContent />
+    ) : modalContent.title === 'Show Write-offs' ? (
+      <ExpenseWriteOffSummary />
     ) : (
       <></>
     );
