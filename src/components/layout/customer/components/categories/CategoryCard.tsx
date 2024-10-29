@@ -1,5 +1,5 @@
-import { Card, CardContent } from '@/components/ui/card';
 import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -15,7 +15,19 @@ interface CategoryCardProps {
   index: number;
 }
 
-export default function CategoryCard({ category, index }: CategoryCardProps) {
+const categories = [
+  { label: 'Supplies', amount: 35, image: '/Supplies.svg' },
+  { label: 'Clothing', amount: 15, image: '/Clothing.png' },
+  { label: 'Travel', amount: 20, image: '/Travel.png' },
+  { label: 'Transport', amount: 25, image: '/Transport.png' },
+  { label: 'Gas', amount: 40, image: '/Gas.png' },
+  { label: 'Meals', amount: 30, image: '/Meals.png' },
+  { label: 'Insurance', amount: 40, image: '/Insurance.png' },
+  { label: 'Payment', amount: 25, image: '/Payment.png' },
+  { label: 'More (25)', amount: '$500', image: '/More.png' },
+];
+
+function CategoryCard({ category, index }: CategoryCardProps) {
   return (
     <Card
       style={index === 0 ? { gridRow: 'span 2' } : { minHeight: '100px' }}
@@ -37,5 +49,19 @@ export default function CategoryCard({ category, index }: CategoryCardProps) {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+// Main component rendering the CategoryCards
+export default function CustomerCategories() {
+  return (
+    <div className="container mx-auto">
+      {/* Supplies and Summary Cards */}
+      <div className="grid grid-cols-5 gap-2 mb-8">
+        {categories.map((category, index) => (
+          <CategoryCard category={category} key={index} index={index} />
+        ))}
+      </div>
+    </div>
   );
 }
