@@ -14,5 +14,10 @@ export async function middleware(request: NextRequest) {
 
 // Specify the paths you want to protect
 export const config = {
-  matcher: ['/transactions', '/users', '/customer/dashboard'],
+  matcher: [
+    '/transactions',
+    '/users',
+    '/customer/dashboard',
+    '/customer/categories',
+  ],
 };
