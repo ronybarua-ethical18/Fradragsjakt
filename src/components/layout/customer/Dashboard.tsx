@@ -2,6 +2,7 @@ import React from 'react';
 import ProtectedLayout from '../ProtectedLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import ExpenseCard, { expenses } from './components/dashboard/ExpenseCard';
 
 function CustomerDashboard() {
   return (
@@ -9,7 +10,7 @@ function CustomerDashboard() {
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-5">
           <div className="grid grid-cols-12 gap-2">
-            <Card className="col-span-6 p-4 border border-[#EEF0F4] border border-[#EEF0F4] shadow-none">
+            <Card className="col-span-6 p-4  border border-[#EEF0F4] shadow-none rounded-2xl">
               <CardHeader>
                 <CardTitle>All Deductible Expenses</CardTitle>
               </CardHeader>
@@ -65,25 +66,8 @@ function CustomerDashboard() {
 
         {/* Expense Categories */}
         <div className="col-span-12 grid grid-cols-3 gap-2">
-          {[
-            { title: 'Personal Spending', amount: '$10,250', icon: '💬' },
-            { title: 'Travel & Meals', amount: '$10,250', icon: '🍽️' },
-            { title: 'Office Expenses', amount: '$10,250', icon: '📞' },
-            { title: 'Car Expenses', amount: '$2,050', icon: '🚗' },
-            { title: 'Taxes/Licenses', amount: '$6,150', icon: '📜' },
-            { title: 'Legal Services', amount: '$4,100', icon: '🔍' },
-          ].map((item, index) => (
-            <Card
-              key={index}
-              className="p-4 flex items-center justify-between border border-[#EEF0F4] shadow-none"
-            >
-              <div>
-                <CardTitle>{item.title}</CardTitle>
-                <div className="text-lg font-semibold">{item.amount}</div>
-                <span className="text-green-500">+55%</span>
-              </div>
-              <div className="text-4xl">{item.icon}</div>{' '}
-            </Card>
+          {expenses.map((expense, index) => (
+            <ExpenseCard key={index} expense={expense} index={index} />
           ))}
         </div>
 
