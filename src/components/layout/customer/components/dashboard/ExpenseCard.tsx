@@ -26,9 +26,9 @@ const ExpenseCard = ({ expense, index }: ExpenseCardProps) => {
         <CardTitle className="text-sm text-[#71717A] font-semibold">
           {expense?.title}
         </CardTitle>
-        <p className="text-lg font-semibold">
+        <p className="text-[20px] text-[#00104B] font-bold">
           ${numberFormatter(expense?.amount)}{' '}
-          <span className="text-green-500">+55%</span>
+          <span className="text-xs text-[#00B386] text-bold">+55%</span>
         </p>
       </div>
       <Image
