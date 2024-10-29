@@ -7,7 +7,7 @@ export default function TableHeader() {
       <TableRow className="text-left bg-white">
         {/* Serial Number Column */}
         <TableCell
-          className="px-[10px] py-[10px] border-b-[1px]"
+          className="px-[8px] py-[10px] border-b-[1px]"
           style={{ width: '100px' }}
         >
           Serial no.
