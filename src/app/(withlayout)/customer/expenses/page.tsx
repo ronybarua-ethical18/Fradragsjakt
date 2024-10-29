@@ -1,8 +1,8 @@
-import ProtectedLayout from '@/components/layout/ProtectedLayout';
 import React from 'react';
+import CustomerExpenses from '@/components/layout/customer/Expenses';
 
 function ExpensePage() {
-  return <ProtectedLayout>Expense</ProtectedLayout>;
+  return <CustomerExpenses />;
 }
 
 export default ExpensePage;
