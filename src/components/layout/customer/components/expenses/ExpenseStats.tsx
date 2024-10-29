@@ -1,17 +1,20 @@
 'use client';
 
 import React from 'react';
-import ReactApexChart from 'react-apexcharts';
+import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+});
 
-const ApexChart: React.FC<{ title: string }> = ({ title }) => {
+const ExpenseStats: React.FC<{ title: string }> = ({ title }) => {
   const chartOptions = {
     series: [
       {
         name: 'Inflation',
         data: [2.3, 3.1, 4.0, 4.0, 3.6, 3.2, 2.3],
       },
-    ],
+    ] as ApexAxisChartSeries,
     options: {
       chart: {
         height: '30%',
@@ -78,4 +81,4 @@ const ApexChart: React.FC<{ title: string }> = ({ title }) => {
   );
 };
 
-export default ApexChart;
+export default ExpenseStats;

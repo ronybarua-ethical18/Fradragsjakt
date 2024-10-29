@@ -1,10 +1,15 @@
-import React from 'react';
-import { IoMdAdd } from 'react-icons/io';
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
 import ExpenseStatsByType from './ExpenseStatsByType';
 import { expenseType } from '@/utils/dummy';
 import ExpenseType from './ExpenseType';
+import PlusIcon from '../../../../../../public/images/expenses/plus.png';
+import ExpenseModal from './ExpenseModal';
 
 function ExpenseTopSection() {
+  const [isModalOpen, setModalOpen] = useState(false);
   return (
     <div className="grid grid-cols-2 gap-3">
       <div className="grid grid-cols-2 gap-3">
@@ -33,9 +38,23 @@ function ExpenseTopSection() {
             />
           ))}
           <div className="text-white flex items-center justify-center bg-[#5B52F9] p-4 rounded-xl font-bold">
-            <IoMdAdd className="font-bold mr-2" /> More
+            <Image
+              src={PlusIcon}
+              alt="Plus icon"
+              className="mr-3"
+              onClick={() => setModalOpen(true)}
+            />{' '}
+            More
           </div>
         </div>
+      </div>
+      <div className="bg-white z-50">
+        <ExpenseModal open={isModalOpen} onOpenChange={setModalOpen}>
+          <div className="bg-white">
+            <p>Custom content for Expense creation</p>
+            {/* You can add any complex content here based on the selected button */}
+          </div>
+        </ExpenseModal>
       </div>
     </div>
   );
