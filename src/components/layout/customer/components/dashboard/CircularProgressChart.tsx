@@ -1,28 +1,38 @@
 'use client';
+import dynamic from 'next/dynamic';
 import React from 'react';
-import Chart from 'react-apexcharts';
+const Chart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+});
 
 interface ApexChartProps {
   series?: number[];
   label?: string;
+  trackBg?: string;
+  color?: string;
   height?: number;
   hollowSize?: string;
 }
 
 const CircularProgressChart: React.FC<ApexChartProps> = ({
-  series = [70],
+  series = [45],
   height = 80,
+  trackBg = '#85E0A366',
+  color = '#00B386',
 }) => {
   const options = {
     chart: {
-      height,
       type: 'radialBar' as const,
     },
-    colors: ['#00B386'],
+    colors: [color],
     plotOptions: {
       radialBar: {
+        track: {
+          background: trackBg,
+          strokeWidth: '100%', // Adjusting background circle width
+        },
         hollow: {
-          size: '40%', // Inner circle size
+          size: '40%',
         },
         dataLabels: {
           name: {
@@ -42,7 +52,7 @@ const CircularProgressChart: React.FC<ApexChartProps> = ({
   };
 
   return (
-    <div id="chart" className="border border-red-800">
+    <div id="chart">
       <Chart
         options={{ ...options }}
         series={series}

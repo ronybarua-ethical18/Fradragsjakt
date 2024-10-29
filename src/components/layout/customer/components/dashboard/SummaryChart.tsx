@@ -8,7 +8,7 @@ const SummaryChart: React.FC = () => {
     chart: {
       type: 'donut' as const,
     },
-    labels: ['Category A', 'Category B', 'Category C', 'Category D'],
+    //labels: ['Category A', 'Category B', 'Category C', 'Category D'],
     colors: ['#6EC1E4', '#FFBE76', '#F3A4B5', '#7ED5C6'], // Adjust colors to match your design
     dataLabels: {
       enabled: false,
@@ -34,7 +34,7 @@ const SummaryChart: React.FC = () => {
       },
     },
     tooltip: {
-      enabled: true,
+      enabled: false,
     },
   };
 

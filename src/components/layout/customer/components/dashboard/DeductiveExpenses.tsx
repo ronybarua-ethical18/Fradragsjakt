@@ -39,7 +39,11 @@ const DeductiveExpenses = () => {
                 Top savings from
               </span>
             </div>
-            <CircularProgressChart />
+            <CircularProgressChart
+              color="#F99BAB"
+              trackBg="#F99BAB5E"
+              series={[55]}
+            />
           </div>
         </div>
       </CardContent>
