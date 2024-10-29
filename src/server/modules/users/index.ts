@@ -16,7 +16,7 @@ export const userRouter = router({
     };
   }),
 
-  getUserById: protectedProcedure.query(async ({ ctx }) => {
+  getUserByEmail: protectedProcedure.query(async ({ ctx }) => {
     const sessionUser = ctx.user as JwtPayload;
 
     if (!sessionUser || !sessionUser?.email) {
