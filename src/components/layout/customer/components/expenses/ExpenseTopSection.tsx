@@ -7,6 +7,7 @@ import { expenseType } from '@/utils/dummy';
 import ExpenseType from './ExpenseType';
 import PlusIcon from '../../../../../../public/images/expenses/plus.png';
 import ExpenseModal from './ExpenseModal';
+import ExpenseUploadFile from './ExpenseUploadFile';
 
 function ExpenseTopSection() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -37,22 +38,25 @@ function ExpenseTopSection() {
               quantity={expense.quantity}
             />
           ))}
-          <div className="text-white flex items-center justify-center bg-[#5B52F9] p-4 rounded-xl font-bold">
-            <Image
-              src={PlusIcon}
-              alt="Plus icon"
-              className="mr-3"
-              onClick={() => setModalOpen(true)}
-            />{' '}
-            More
+          <div
+            className="text-white flex items-center justify-center bg-[#5B52F9] p-4 rounded-xl font-bold cursor-pointer"
+            onClick={() => setModalOpen(true)}
+          >
+            <Image src={PlusIcon} alt="Plus icon" className="mr-3" /> More
           </div>
         </div>
       </div>
       <div className="bg-white z-50">
-        <ExpenseModal open={isModalOpen} onOpenChange={setModalOpen}>
+        <ExpenseModal
+          open={isModalOpen}
+          onOpenChange={setModalOpen}
+          customClassName="w-[500px]"
+        >
           <div className="bg-white">
-            <p>Custom content for Expense creation</p>
-            {/* You can add any complex content here based on the selected button */}
+            <h1 className="font-bold text-xl text-[#5B52F9] mb-4">
+              Upload receipt as attachment
+            </h1>
+            <ExpenseUploadFile />
           </div>
         </ExpenseModal>
       </div>
