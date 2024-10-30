@@ -12,8 +12,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ArrowUpDown } from 'lucide-react';
+import ArrowUpDown from '../../../../../../public/sort.png';
 import { Checkbox } from '@/components/ui/checkbox';
+import Image from 'next/image';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -32,6 +33,7 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
     id: 'select',
     header: ({ table }) => (
       <Checkbox
+        className="border border-[#E4E4E7] shadow-none rounded-none  data-[state=checked]:text-white"
         checked={
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && 'indeterminate')
@@ -42,6 +44,7 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
+        className="border border-[#E4E4E7] shadow-none rounded-none  data-[state=checked]:text-white"
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
@@ -59,7 +62,7 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
     accessorKey: 'expense_description',
     header: 'Expense description',
     cell: ({ row }) => (
-      <div className="text-center">{row.getValue('expense_description')}</div>
+      <div className="pl-4">{row.getValue('expense_description')}</div>
     ), // Center aligned
   },
   {
@@ -70,11 +73,11 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Expense type
-        <ArrowUpDown className="ml-2 h-4 w-4" />
+        <Image src={ArrowUpDown} alt="sort icon" className="ml-2" />
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="text-center">{row.getValue('expense_type')}</div>
+      <div className="pl-4">{row.getValue('expense_type')}</div>
     ), // Center aligned
   },
   {
@@ -85,12 +88,10 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Status
-        <ArrowUpDown className="ml-2 h-4 w-4" />
+        <Image src={ArrowUpDown} alt="sort icon" className="ml-2" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue('status')}</div>
-    ), // Center aligned
+    cell: ({ row }) => <div className="pl-4">{row.getValue('status')}</div>, // Center aligned
   },
   {
     accessorKey: 'category',
@@ -100,12 +101,10 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Category
-        <ArrowUpDown className="ml-2 h-4 w-4" />
+        <Image src={ArrowUpDown} alt="sort icon" className="ml-2" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue('category')}</div>
-    ), // Center aligned
+    cell: ({ row }) => <div className="pl-4">{row.getValue('category')}</div>, // Center aligned
   },
   {
     accessorKey: 'amount',
@@ -117,7 +116,7 @@ export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
         currency: 'USD',
       }).format(amount);
 
-      return <div className="text-center font-medium">{formatted}</div>; // Center aligned
+      return <div className="text-right font-medium">{formatted}</div>; // Center aligned
     },
   },
   {

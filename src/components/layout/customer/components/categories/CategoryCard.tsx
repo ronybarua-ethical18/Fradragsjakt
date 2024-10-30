@@ -31,7 +31,7 @@ function CategoryCard({ category, index }: CategoryCardProps) {
   return (
     <Card
       style={index === 0 ? { gridRow: 'span 2' } : { minHeight: '100px' }}
-      className="rounded-[16px] border border-[#EEF0F4] bg-white"
+      className="rounded-[16px] border border-[#EEF0F4] shadow-none "
     >
       <CardContent className="flex h-full items-center space-x-4 p-4">
         <Image
@@ -55,13 +55,10 @@ function CategoryCard({ category, index }: CategoryCardProps) {
 // Main component rendering the CategoryCards
 export default function CustomerCategories() {
   return (
-    <div className="container mx-auto">
-      {/* Supplies and Summary Cards */}
-      <div className="grid grid-cols-5 gap-2 mb-8">
-        {categories.map((category, index) => (
-          <CategoryCard category={category} key={index} index={index} />
-        ))}
-      </div>
+    <div className="grid grid-cols-5 gap-2">
+      {categories.map((category, index) => (
+        <CategoryCard category={category} key={index} index={index} />
+      ))}
     </div>
   );
 }

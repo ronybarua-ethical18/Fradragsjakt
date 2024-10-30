@@ -19,7 +19,7 @@ import { FcLineChart, FcPackage } from 'react-icons/fc';
 export const menuConfig = {
   admin: [
     {
-      href: '/',
+      href: '/dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
     },
@@ -77,7 +77,7 @@ export const menuConfig = {
   ],
   customer: [
     {
-      href: '/',
+      href: '/dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
     },
@@ -85,10 +85,10 @@ export const menuConfig = {
       href: '/expenses',
       label: 'Expenses',
       icon: HandCoins,
-      subItems: [{ href: '/expenses/categories', label: 'Categories' }],
+      subItems: [{ href: '/categories', label: 'Categories' }],
     },
     {
-      href: '/rule',
+      href: '/rules',
       label: 'Rules',
       icon: HandCoins,
     },

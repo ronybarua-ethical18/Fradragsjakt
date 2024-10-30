@@ -31,7 +31,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
       {status === 'loading' && (
         <Loading size="extra_large"> Loading...</Loading>
       )}
-      <div className="h-screen w-full overflow-hidden">
+      <div className="h-full w-full overflow-hidden">
         <header className="flex bg-[#00104B] justify-between h-14 items-center px-7  lg:h-[60px] lg:px-[128px]">
           <MobileNav role={user?.user?.role || ''} />
           <div className="hidden md:flex items-center ">

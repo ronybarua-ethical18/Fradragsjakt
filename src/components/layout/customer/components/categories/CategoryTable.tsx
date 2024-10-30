@@ -1,71 +1,49 @@
-import React from 'react';
-import { Table, TableBody, TableRow, TableCell } from '@/components/ui/table'; // Update import paths as needed
-import ActionPopover from './PopOver';
+'use client';
+import React, { useState } from 'react';
+import { SharedDataTable } from '@/components/SharedDataTable';
+import { Category, CategoryTableColumns } from './CategoryTableColumns';
+import SharedPagination from '@/components/SharedPagination';
+import SearchInput from '@/components/SearchInput';
+import CategoryAddModal from './CategoryAddModal';
+const data: Category[] = [
+  { id: '1', serialNo: 1, name: 'Transport', createdBy: 'USER' },
+  { id: '2', serialNo: 2, name: 'Car', createdBy: 'SYSTEM' },
+  { id: '3', serialNo: 3, name: 'Gas', createdBy: 'USER' },
+  { id: '4', serialNo: 4, name: 'Stationary', createdBy: 'USER' },
+  { id: '5', serialNo: 5, name: 'Air ticket', createdBy: 'SYSTEM' },
+  { id: '6', serialNo: 6, name: 'Meals', createdBy: 'SYSTEM' },
+  { id: '7', serialNo: 7, name: 'Insurance', createdBy: 'USER' },
+  { id: '8', serialNo: 8, name: 'Travel', createdBy: 'SYSTEM' },
+  { id: '9', serialNo: 9, name: 'Clothing', createdBy: 'USER' },
+  { id: '10', serialNo: 10, name: 'Payment', createdBy: 'SYSTEM' },
+];
 
 export default function CategoryTable() {
-  // Placeholder data with specified values
-  const placeholderItems = [
-    { serial: 1, category: 'Food', createdBy: 'User' },
-    { serial: 2, category: 'Meals', createdBy: 'System' },
-    { serial: 3, category: 'Travel', createdBy: 'User' },
-    { serial: 4, category: 'Insurance', createdBy: 'System' },
-    { serial: 5, category: 'Bills', createdBy: 'User' },
-    { serial: 6, category: 'Services', createdBy: 'System' },
-    { serial: 7, category: 'Utility', createdBy: 'User' },
-    { serial: 8, category: 'Car', createdBy: 'System' },
-    { serial: 9, category: 'Gas', createdBy: 'User' },
-    { serial: 10, category: 'Others', createdBy: 'System' },
-  ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10;
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
-    <div className="overflow-auto">
-      <Table className="min-w-full border-collapse">
-        <TableBody>
-          {placeholderItems.map((item) => (
-            <TableRow key={item.serial} className="border-b">
-              <TableCell
-                className="px-[10px] py-[10px] text-center"
-                style={{
-                  maxWidth: '100px', // Adjusted max width to 75px
-                  width: '100px', // Set fixed width
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {item.serial}
-              </TableCell>
-              <TableCell
-                className="px-[10px] py-[10px] text-start"
-                style={{
-                  maxWidth: '385px',
-                  width: '385px',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {item.category}
-              </TableCell>
-              <TableCell
-                className="px-[10px] py-[10px] text-start"
-                style={{
-                  maxWidth: '300px',
-                  width: '300px',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {item.createdBy}
-              </TableCell>
-              <TableCell className="px-4 py-2 text-end">
-                <ActionPopover />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="rounded-2xl mt-2 p-6 bg-white">
+      <div className="flex justify-between items-center mb-4  ">
+        <h2 className="text-xl text-[#101010] font-bold">Category Overview</h2>
+        <div className="flex gap-2">
+          <SearchInput className="" />
+          <CategoryAddModal />
+        </div>
+      </div>
+      <div className="mt-10">
+        <SharedDataTable columns={CategoryTableColumns} data={data} />
+        <div className="mt-10">
+          <SharedPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      </div>
     </div>
   );
 }

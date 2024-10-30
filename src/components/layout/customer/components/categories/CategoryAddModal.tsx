@@ -17,19 +17,21 @@ export default function CategoryAddModal() {
       <DialogTrigger asChild>
         <Button variant="purple">+ Add category</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[564px]">
         <DialogHeader>
-          <DialogTitle className="text-violet-600 font-inter text-2xl font-bold leading-tight">
+          <DialogTitle className="text-[#5B52F9] text-xl font-bold leading-tight">
             Add Category
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {/* Separate line for label */}
           <div>
-            <Label className="block mb-2">Category Name</Label>
+            <Label className="block mb-2 text-[#101010] text-xs font-medium">
+              Category Name
+            </Label>
             <Input
               id="name"
-              className="w-full text-gray-600 font-inter text-xs font-normal leading-5"
+              className="w-full text-gray-600 border border-[#E4E4E7]  text-xs font-normal leading-5"
               placeholder="Bills"
               style={{
                 fontSize: '12px',
@@ -44,7 +46,7 @@ export default function CategoryAddModal() {
         <DialogFooter>
           <Button
             type="submit"
-            className="w-full flex h-9 py-2 px-4 justify-center items-center gap-[10px] text-white"
+            className="w-full flex h-9 py-2 px-4 justify-center items-center gap-[10px] text-white text-sm font-medium"
           >
             Add
           </Button>

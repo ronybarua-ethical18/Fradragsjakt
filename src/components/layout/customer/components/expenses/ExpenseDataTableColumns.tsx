@@ -32,6 +32,7 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
     id: 'select',
     header: ({ table }) => (
       <Checkbox
+        className="border border-[#E4E4E7] shadow-none rounded-none  data-[state=checked]:text-white"
         checked={
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && 'indeterminate')
@@ -42,6 +43,7 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
+        className="border border-[#E4E4E7] shadow-none rounded-none  data-[state=checked]:text-white"
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
