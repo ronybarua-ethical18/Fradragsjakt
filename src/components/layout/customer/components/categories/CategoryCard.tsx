@@ -31,7 +31,7 @@ function CategoryCard({ category, index }: CategoryCardProps) {
   return (
     <Card
       style={index === 0 ? { gridRow: 'span 2' } : { minHeight: '100px' }}
-      className="rounded-[16px] border border-[#EEF0F4] bg-white"
+      className="rounded-[16px] border border-[#EEF0F4] shadow-none "
     >
       <CardContent className="flex h-full items-center space-x-4 p-4">
         <Image
