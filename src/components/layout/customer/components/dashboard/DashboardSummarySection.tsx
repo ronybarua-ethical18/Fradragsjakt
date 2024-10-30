@@ -1,5 +1,4 @@
 'use client';
-import { Card } from '@/components/ui/card';
 import React from 'react';
 import ExpenseCard, { expenses } from './ExpenseCard';
 import DeductiveExpenses from './DeductiveExpenses';
@@ -17,9 +16,7 @@ const DashboardSummarySection = () => {
       </div>
 
       {/* Yearly Graph */}
-      <Card className="col-span-7 border border-[#EEF0F4] shadow-none">
-        <YearlyExpenseGraph />
-      </Card>
+      <YearlyExpenseGraph />
 
       {/* Expense Categories */}
       <div className="col-span-12 grid grid-cols-3 gap-2">
