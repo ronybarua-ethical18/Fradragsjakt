@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { SharedDataTable } from '@/components/SharedDataTable';
 import { CategoryTableColumns } from './CategoryTableColumns';
 import SharedPagination from '@/components/SharedPagination';
+import SearchInput from '@/components/SearchInput';
+import CategoryAddModal from './CategoryAddModal';
 const data = [
   {
     id: '728ed52f',
@@ -43,8 +45,14 @@ export default function CategoryTable() {
     setCurrentPage(page);
   };
   return (
-    <div className="rounded-2xl px-4 py-6 bg-white">
-      CategoryOverviewHeading
+    <div className="rounded-2xl mt-2 p-6 bg-white">
+      <div className="flex justify-between items-center mb-4  ">
+        <h2 className="text-xl font-bold">Category Overview</h2>
+        <div className="flex gap-2">
+          <SearchInput className="" />
+          <CategoryAddModal />
+        </div>
+      </div>
       <div className="mt-10">
         <SharedDataTable columns={CategoryTableColumns} data={data} />
         <div className="mt-10">

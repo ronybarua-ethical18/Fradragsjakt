@@ -50,7 +50,7 @@ function ExpenseTopSection() {
         <ExpenseModal
           open={isModalOpen}
           onOpenChange={setModalOpen}
-          customClassName="w-[500px]"
+          customClassName="max-w-[500px]"
         >
           <div className="bg-white">
             <h1 className="font-bold text-xl text-[#5B52F9] mb-4">
