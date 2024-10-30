@@ -166,3 +166,81 @@ export const expenseType = [
     amount: 500,
   },
 ];
+
+export const expenseWriteOffs = [
+  {
+    id: 1,
+    title: 'Business meals',
+    quantity: 18,
+    amount: '$200',
+  },
+  {
+    id: 2,
+    title: 'Travels',
+    quantity: 1,
+    amount: '$6',
+  },
+  {
+    id: 3,
+    title: 'Clothing',
+    quantity: 1,
+    amount: '$3',
+  },
+  {
+    id: 4,
+    title: 'Supplies',
+    quantity: 1,
+    amount: '$12',
+  },
+  {
+    id: 5,
+    title: 'Payment',
+    quantity: 1,
+    amount: '$5',
+  },
+  {
+    id: 6,
+    title: 'Gas',
+    quantity: 1,
+    amount: '$2',
+  },
+  {
+    id: 7,
+    title: 'Review your deductions',
+    quantity: 0,
+    amount: 46,
+  },
+  {
+    id: 8,
+    title: 'Questions answered',
+    quantity: 0,
+    amount: '8 out of 9',
+  },
+  {
+    id: 9,
+    title: 'Potential saving total from 46 write-offs',
+    quantity: 0,
+    amount: '$2,086',
+  },
+];
+
+export const summaryWriteOffs = [
+  {
+    id: 1,
+    title: 'Review your deductions',
+    quantity: 46,
+    amount: 0,
+  },
+  {
+    id: 2,
+    title: 'Questions answered',
+    quantity: '8 out of 9',
+    amount: 0,
+  },
+  {
+    id: 3,
+    title: 'Potential saving total from 46 write-offs',
+    quantity: 1,
+    amount: '$2,086',
+  },
+];
