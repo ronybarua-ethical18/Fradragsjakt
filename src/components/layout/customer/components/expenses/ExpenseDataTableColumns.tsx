@@ -12,19 +12,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ArrowUpDown } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
+import ArrowUpDown from '../../../../../../public/sort.png';
+import Image from 'next/image';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type ExpenseColumnProps = {
   id: string;
+  date: string;
+  description: string;
+  category: string;
+  expenseType: string;
   amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
 };
 
-export const expenseDataTableColumns: ColumnDef<Payment>[] = [
+export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -48,34 +51,63 @@ export const expenseDataTableColumns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'date',
+    header: 'Date',
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ row }) => {
+      return (
+        <span className="text-[#00104B]">{row.getValue('description')}</span>
+      );
+    },
+  },
+  {
+    accessorKey: 'category',
+
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
+          className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          Category
+          <Image src={ArrowUpDown} alt="arrow icon" className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: 'expenseType',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Type
+          <Image src={ArrowUpDown} alt="arrow icon" className="ml-2" />
         </Button>
       );
     },
   },
   {
     accessorKey: 'amount',
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Amount
+          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
+          <Image src={ArrowUpDown} alt="arrow icon" className="ml-2" />
+        </Button>
+      );
     },
   },
   {
