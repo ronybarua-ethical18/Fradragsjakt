@@ -1,20 +1,25 @@
 // components/SummaryChart.tsx
 'use client';
+import dynamic from 'next/dynamic';
 import React from 'react';
-import Chart from 'react-apexcharts';
-
+const Chart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+});
 const SummaryChart: React.FC = () => {
   const chartOptions = {
     chart: {
       type: 'donut' as const,
     },
-    labels: ['Category A', 'Category B', 'Category C', 'Category D'],
-    colors: ['#6EC1E4', '#FFBE76', '#F3A4B5', '#7ED5C6'], // Adjust colors to match your design
+    colors: ['#9F97F7', '#FFB44F', '#F99BAB', '#9BDFC4', '#62B2FD', '#6EC1E4'],
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      formatter: (val: number) => `${val.toFixed(1)}%`,
+      dropShadow: {
+        enabled: false,
+      },
     },
     legend: {
-      show: false,
+      show: false, // Hide legend
     },
     plotOptions: {
       pie: {
@@ -22,23 +27,40 @@ const SummaryChart: React.FC = () => {
           size: '70%',
           labels: {
             show: true,
+            name: {
+              show: true,
+              fontSize: '22px',
+              fontWeight: 600,
+              color: '#1F2937',
+              offsetY: 5,
+            },
+            value: {
+              show: false,
+            },
             total: {
               show: true,
               label: '$41,000',
               fontSize: '22px',
               fontWeight: 600,
-              color: '#1F2937', // Darker text
+              color: '#1F2937',
             },
           },
         },
       },
+      expandOnClick: false,
+    },
+    stroke: {
+      width: 0,
     },
     tooltip: {
       enabled: true,
+      y: {
+        formatter: (val: number) => `$${val.toLocaleString()}`,
+      },
     },
   };
 
-  const chartSeries = [25, 25, 25, 25];
+  const chartSeries = [5, 10, 15, 25, 25, 25];
 
   return (
     <div className="col-span-6 space-y-6 p-6 bg-white rounded-2xl  border border-[#EEF0F4] shadow-none">
