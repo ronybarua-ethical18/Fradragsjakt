@@ -38,8 +38,8 @@ export default function Login() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      // router.push(`/${user?.user.role}/dashboard`); // Redirect if already authenticated
       router.push(`/${user?.user.role}/dashboard`); // Redirect if already authenticated
+      //router.push(`/${user?.user.role}/categories`); // Redirect if already authenticated
     }
   }, [status, router, user]);
 

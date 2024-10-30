@@ -1,9 +1,10 @@
 'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import React from 'react';
 import ExpenseCard, { expenses } from './ExpenseCard';
 import DeductiveExpenses from './DeductiveExpenses';
 import SummaryChart from './SummaryChart';
+import YearlyExpenseGraph from './YearlyExpenseGraph';
 
 const DashboardSummarySection = () => {
   return (
@@ -16,15 +17,8 @@ const DashboardSummarySection = () => {
       </div>
 
       {/* Yearly Graph */}
-      <Card className="col-span-7 p-4 border border-[#EEF0F4] shadow-none">
-        <CardHeader>
-          <CardTitle>Yearly Graph</CardTitle>
-          <span className="text-sm text-gray-500">Please check your docs</span>
-        </CardHeader>
-        <CardContent>
-          {/* Placeholder for Graph */}
-          <div className="h-36 bg-gray-100 rounded-lg"></div>
-        </CardContent>
+      <Card className="col-span-7 border border-[#EEF0F4] shadow-none">
+        <YearlyExpenseGraph />
       </Card>
 
       {/* Expense Categories */}
