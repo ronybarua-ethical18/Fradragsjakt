@@ -5,7 +5,13 @@ import { Input } from './ui/input';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export default function SearchInput({ className }: { className: string }) {
+export default function SearchInput({
+  className,
+  placeholder = 'Search',
+}: {
+  className?: string;
+  placeholder: string;
+}) {
   const form = useForm({
     defaultValues: {
       search: '',
@@ -22,7 +28,7 @@ export default function SearchInput({ className }: { className: string }) {
         )}
         <Input
           type="search"
-          placeholder="Search"
+          placeholder={placeholder}
           className="w-full appearance-none bg-background py-2 pl-3 shadow-none placeholder:text-[#71717A] placeholder:text-sm"
           {...form.register('search')}
         />
