@@ -1,13 +1,13 @@
 import React from 'react';
 import ProtectedLayout from '../ProtectedLayout';
 import CategoryCard from './components/categories/CategoryCard';
-import CategoryOverview from './components/categories/CategoryOverview';
+import CategoryTable from './components/categories/CategoryTable';
 
 export default function CustomerCategories() {
   return (
     <ProtectedLayout>
       <CategoryCard />
-      <CategoryOverview />
+      <CategoryTable />
     </ProtectedLayout>
   );
 }
