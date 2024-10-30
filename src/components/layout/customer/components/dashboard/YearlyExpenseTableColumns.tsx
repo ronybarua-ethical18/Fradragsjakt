@@ -17,14 +17,17 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Expense = {
   id: string;
+  date: string;
+  expense_description: string;
+  expense_type: string;
+  status: string;
+  category: string; // Adjust based on possible categories
   amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
 };
 
-export const YearlyExpenseTableColumns: ColumnDef<Payment>[] = [
+export const YearlyExpenseTableColumns: ColumnDef<Expense>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -120,7 +123,7 @@ export const YearlyExpenseTableColumns: ColumnDef<Payment>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const payment = row.original;
+      const expense = row.original;
 
       return (
         <DropdownMenu>
@@ -133,7 +136,7 @@ export const YearlyExpenseTableColumns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(expense?.id)}
             >
               Copy payment ID
             </DropdownMenuItem>

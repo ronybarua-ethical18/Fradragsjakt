@@ -6,6 +6,7 @@ import { YearlyExpenseTableColumns } from './YearlyExpenseTableColumns';
 const YearlyExpenseTable = () => {
   const data = [
     {
+      id: '1',
       date: '8/30/24',
       expense_description: 'Chase',
       expense_type: 'Private',
@@ -14,6 +15,7 @@ const YearlyExpenseTable = () => {
       amount: 100,
     },
     {
+      id: '2',
       date: '8/30/24',
       expense_description: 'Chase',
       expense_type: 'Public',
@@ -22,6 +24,7 @@ const YearlyExpenseTable = () => {
       amount: 100,
     },
     {
+      id: '3',
       date: '8/30/24',
       expense_description: 'Chase',
       expense_type: 'Private',
@@ -30,6 +33,7 @@ const YearlyExpenseTable = () => {
       amount: 100,
     },
     {
+      id: '4',
       date: '8/30/24',
       expense_description: 'Chase',
       expense_type: 'Public',
