@@ -55,13 +55,10 @@ function CategoryCard({ category, index }: CategoryCardProps) {
 // Main component rendering the CategoryCards
 export default function CustomerCategories() {
   return (
-    <div className="container mx-auto">
-      {/* Supplies and Summary Cards */}
-      <div className="grid grid-cols-5 gap-2 mb-8">
-        {categories.map((category, index) => (
-          <CategoryCard category={category} key={index} index={index} />
-        ))}
-      </div>
+    <div className="grid grid-cols-5 gap-2">
+      {categories.map((category, index) => (
+        <CategoryCard category={category} key={index} index={index} />
+      ))}
     </div>
   );
 }
