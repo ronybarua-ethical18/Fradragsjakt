@@ -26,19 +26,19 @@ export function ContentBank() {
       id: 'item-1',
       title: 'Have a loan?',
       content:
-        'If you have given a monetary donation of at least NOK 500 to a voluntary organisation and/or religious or belief-based community, you can get a deduction for this.',
+        'Norway allows you to deduct interest paid on loans, including mortgage interest, student loans, and consumer loans, provided that the lender has reported the loan to the Tax Administration. Interest payments on loans in Norway are typically deductible at a rate of 22% (the standard tax deduction rate).',
     },
     {
       id: 'item-2',
       title: 'Have refinanced a loan in the last year?',
       content:
-        'If you have given a monetary donation of at least NOK 500 to a voluntary organisation and/or religious or belief-based community, you can get a deduction for this.',
+        'If you’ve refinanced a loan, you may still be eligible to deduct interest expenses. Any fees associated with refinancing, such as loan arrangement fees, are generally not deductible. However, the interest paid after refinancing remains deductible, as long as it pertains to your primary residence, real estate, or certain other qualifying expenses.',
     },
     {
       id: 'item-3',
       title: 'Have taken out a joint loan with someone?',
       content:
-        'If you have given a monetary donation of at least NOK 500 to a voluntary organisation and/or religious or belief-based community, you can get a deduction for this.',
+        'For joint loans, each borrower can claim deductions on their portion of the interest paid. You would each declare your individual share of the interest payments on your tax returns. As with single loans, the deduction rate is generally 22% of the interest paid.',
     },
     {
       id: 'item-4',

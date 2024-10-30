@@ -5,6 +5,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
@@ -20,67 +27,106 @@ export function ContentHealthFamily() {
     );
   };
 
+  // Array of accordion items for cleaner code
+  const accordionData = [
+    {
+      id: 'item-1',
+      title: 'Have children aged 11 years or younger',
+      content: (
+        <>
+          Parents can deduct expenses related to childcare, such as daycare
+          (barnehage) or after-school programs (SFO/AKS), for children under 12
+          years of age. The deduction is up to NOK 25,000 for the first child
+          and an additional NOK 15,000 per additional child under 12.
+          <p className="text-black pt-[12px] pb-[6px]">
+            How many children do you have under the Age of 12
+          </p>
+          <Input type="text" placeholder="2" />
+        </>
+      ),
+    },
+    {
+      id: 'item-2',
+      title: 'I have children aged 12 or older with special care needs',
+      content: (
+        <>
+          Parents can deduct expenses related to childcare, such as daycare
+          (barnehage) or after-school programs (SFO/AKS), for children under 12
+          years of age.
+          <p className="text-black pt-[12px] pb-[6px]">
+            Do you have children with needs for special care?
+          </p>
+          <Select>
+            <SelectTrigger id="Select">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              <SelectItem value="true">Yes</SelectItem>
+              <SelectItem value="false">No</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      ),
+    },
+    {
+      id: 'item-3',
+      title:
+        'Have additional travel distance or expenses related to dropping off the child in a child day care centre or after-school supervision scheme',
+      content: (
+        <>
+          Have additional travel distance or expenses related to dropping off
+          the child in a child day care centre or after-school supervision
+          scheme
+        </>
+      ),
+    },
+    {
+      id: 'item-4',
+      title: 'I am a single parent',
+      content: (
+        <>
+          Single parents receive a monthly allowance for each child under 18
+          years of age. As of 2023, the benefit is NOK 1,676 per month for
+          children under six and NOK 1,054 for children aged six and older. This
+          is not taxable income.
+          <p className="text-black pt-[12px] pb-[6px]">
+            Do you get allowance as a single parent?
+          </p>
+          <Select>
+            <SelectTrigger id="Select">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              <SelectItem value="true">Yes</SelectItem>
+              <SelectItem value="false">No</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="bg-white p-8 rounded-2xl w-[565px] border-[1px]">
       <p className="text-xs text-gray-500">Review Questionnaire</p>
       <Accordion type="multiple" className="w-full">
-        <AccordionItem value="item-1">
-          <AccordionTrigger
-            onClick={() => handleToggle('item-1')}
-            className={`${
-              openItems.includes('item-1') ? 'text-violet-600' : ''
-            } no-underline font-bold`}
-          >
-            Have a loan?
-          </AccordionTrigger>
-          {openItems.includes('item-1') && (
-            <AccordionContent className="text-gray-500 text-xs">
-              If you have given a monetary donation of at least NOK 500 to a
-              voluntary organisation and/or religious or belief-based community,
-              you can get a deduction for this.
-              <p className="text-black pt-[12px] pb-[6px]">Amount</p>
-              <Input type="text" placeholder="$200" />
-            </AccordionContent>
-          )}
-        </AccordionItem>
-
-        <AccordionItem value="item-2">
-          <AccordionTrigger
-            onClick={() => handleToggle('item-2')}
-            className={`${
-              openItems.includes('item-2') ? 'text-violet-600' : ''
-            } no-underline font-bold`}
-          >
-            Is it styled?
-          </AccordionTrigger>
-          {openItems.includes('item-2') && (
-            <AccordionContent className="text-gray-500 text-xs">
-              Yes. It comes with default styles that match the other components
-              aesthetic.
-              <p className="text-black pt-[12px] pb-[6px]">Amount</p>
-              <Input type="text" placeholder="$200" />
-            </AccordionContent>
-          )}
-        </AccordionItem>
-
-        <AccordionItem value="item-3">
-          <AccordionTrigger
-            onClick={() => handleToggle('item-3')}
-            className={`${
-              openItems.includes('item-3') ? 'text-violet-600' : ''
-            } no-underline font-bold`}
-          >
-            Is it animated?
-          </AccordionTrigger>
-          {openItems.includes('item-3') && (
-            <AccordionContent className="text-gray-500 text-xs">
-              Yes. It’s animated by default, but you can disable it if you
-              prefer.
-              <p className="text-black pt-[12px] pb-[6px]">Amount</p>
-              <Input type="text" placeholder="$200" />
-            </AccordionContent>
-          )}
-        </AccordionItem>
+        {accordionData.map((item) => (
+          <AccordionItem key={item.id} value={item.id}>
+            <AccordionTrigger
+              onClick={() => handleToggle(item.id)}
+              className={`${
+                openItems.includes(item.id) ? 'text-violet-600' : ''
+              } no-underline font-bold text-start`}
+            >
+              {item.title}
+            </AccordionTrigger>
+            {openItems.includes(item.id) && (
+              <AccordionContent className="text-gray-500 text-xs">
+                {item.content}
+              </AccordionContent>
+            )}
+          </AccordionItem>
+        ))}
       </Accordion>
       <Button className="text-white w-full mt-4">Done</Button>
     </div>
