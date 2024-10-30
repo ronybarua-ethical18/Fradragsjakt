@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased overflow-hidden`}>
+      <body className={`${inter.className} antialiased  `}>
         <ClientProviders session={session}>{children}</ClientProviders>
         {/* <Toaster /> */}
         <Toaster position="top-center" />
