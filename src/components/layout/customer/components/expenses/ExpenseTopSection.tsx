@@ -6,7 +6,7 @@ import ExpenseStatsByType from './ExpenseStatsByType';
 import { expenseType } from '@/utils/dummy';
 import ExpenseType from './ExpenseType';
 import PlusIcon from '../../../../../../public/images/expenses/plus.png';
-import ExpenseModal from './ExpenseModal';
+import ExpenseModal from '../../../../SharedModal';
 import ExpenseUploadFile from './ExpenseUploadFile';
 
 function ExpenseTopSection() {

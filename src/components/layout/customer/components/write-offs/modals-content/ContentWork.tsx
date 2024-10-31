@@ -77,7 +77,7 @@ export function ContentWork() {
   ];
 
   return (
-    <div className="bg-white p-8 rounded-2xl w-[565px] border-[1px]">
+    <div>
       <p className="text-xs text-gray-500">Review Questionnaire</p>
       <Accordion type="multiple" className="w-full">
         {accordionData.map((item) => (

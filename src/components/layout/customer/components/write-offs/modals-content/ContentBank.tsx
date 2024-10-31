@@ -55,7 +55,7 @@ export function ContentBank() {
   ];
 
   return (
-    <div className="bg-white p-8 border-[1px] rounded-2xl w-[565px]">
+    <div>
       <p className="text-xs text-gray-500">Review Questionnaire</p>
       <Accordion type="multiple" className="w-full">
         {accordionData.map((item) => (

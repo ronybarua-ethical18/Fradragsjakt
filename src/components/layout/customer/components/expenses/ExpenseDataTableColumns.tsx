@@ -15,6 +15,13 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import ArrowUpDown from '../../../../../../public/sort.png';
 import Image from 'next/image';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -80,6 +87,26 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const defaultType = row.getValue('category') as string;
+      return (
+        <Select
+          defaultValue={defaultType}
+          onValueChange={(value) => console.log('Updated type:', value)}
+        >
+          <SelectTrigger className="w-[162px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {['Transport', 'Meals', 'Travel', 'Meals'].map((_, i) => (
+              <SelectItem key={i} value={_}>
+                {_}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    },
   },
   {
     accessorKey: 'expenseType',
@@ -93,6 +120,26 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
           Type
           <Image src={ArrowUpDown} alt="arrow icon" className="ml-2" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const defaultType = row.getValue('expenseType') as string;
+      return (
+        <Select
+          defaultValue={defaultType}
+          onValueChange={(value) => console.log('Updated type:', value)}
+        >
+          <SelectTrigger className="w-[162px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {['Don’t know', 'Personal', 'Business'].map((_, i) => (
+              <SelectItem key={i} value={_}>
+                {_}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       );
     },
   },

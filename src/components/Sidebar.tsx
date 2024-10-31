@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   return (
     <div
       ref={menuRef}
-      className="hidden md:block w-[250px] h-[calc(100vh-56px)] px-4 py-12 bg-white border border-[#EEF0F4] rounded-b-lg"
+      className="hidden md:block w-[250px] h-[calc(100vh-84px)] px-4 py-12 bg-white border border-[#EEF0F4] rounded-b-2xl"
     >
       <div className="flex flex-col h-full justify-between">
         <nav className="grid items-start text-sm font-medium gap-2">
