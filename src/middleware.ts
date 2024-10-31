@@ -19,5 +19,7 @@ export const config = {
     '/users',
     '/customer/dashboard',
     '/customer/categories',
+    '/customer/rules',
+    '/customer/expenses',
   ],
 };
