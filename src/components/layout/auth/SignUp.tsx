@@ -31,7 +31,7 @@ export default function SignUp() {
   const { handleSubmit, control, reset } = useForm<FormData>();
 
   useEffect(() => {
-    if (session?.user) router.push(`/${session?.user?.role}/dashboard`);
+    if (session?.user.role) router.push(`/${session?.user?.role}/dashboard`);
   }, [session, router]);
 
   const mutation = trpc.auth.signup.useMutation({

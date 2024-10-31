@@ -11,7 +11,7 @@ interface ModalProps {
   customClassName?: string;
 }
 
-const ExpenseModal: React.FC<ModalProps> = ({
+const SharedModal: React.FC<ModalProps> = ({
   open,
   onOpenChange,
   children,
@@ -39,4 +39,4 @@ const ExpenseModal: React.FC<ModalProps> = ({
   );
 };
 
-export default ExpenseModal;
+export default SharedModal;

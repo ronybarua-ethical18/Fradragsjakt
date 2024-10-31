@@ -3,13 +3,13 @@ import SearchInput from '@/components/SearchInput';
 import { Button } from '@/components/ui/button';
 import { IoMdAdd } from 'react-icons/io';
 import Image from 'next/image';
-import ExpenseModal from './ExpenseModal'; // Adjust the path if needed
 import FilterIcon from '../../../../../../public/images/expenses/filter.png';
 import RuleIcon from '../../../../../../public/images/expenses/rule.png';
 import WriteOffIcon from '../../../../../../public/images/expenses/writeoff.png';
 import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
 import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
+import SharedModal from '../../../../SharedModal';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -81,13 +81,13 @@ function ExpenseOverviewHeading() {
 
       {/* ExpenseModal component */}
       <div className="bg-white z-50">
-        <ExpenseModal
+        <SharedModal
           open={isModalOpen}
           onOpenChange={setModalOpen}
           customClassName="max-w-[500px]"
         >
           <div className="bg-white">{renderContent()}</div>
-        </ExpenseModal>
+        </SharedModal>
       </div>
     </div>
   );
