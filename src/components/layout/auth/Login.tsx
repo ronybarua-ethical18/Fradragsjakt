@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (status === 'authenticated' && user.user.role) {
       router.push(`/${user?.user.role}/dashboard`); // Redirect if already authenticated
       //router.push(`/${user?.user.role}/categories`); // Redirect if already authenticated
     }

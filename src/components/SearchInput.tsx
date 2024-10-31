@@ -10,7 +10,7 @@ export default function SearchInput({
   placeholder = 'Search',
 }: {
   className?: string;
-  placeholder: string;
+  placeholder?: string;
 }) {
   const form = useForm({
     defaultValues: {
