@@ -37,9 +37,18 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (status === 'authenticated' && user.user.role) {
+    if (
+      status === 'authenticated' &&
+      user.user.role &&
+      !user?.user.hasAnswers
+    ) {
+      router.push(`/onboard`);
+    } else if (
+      status === 'authenticated' &&
+      user.user.role &&
+      user?.user.hasAnswers
+    ) {
       router.push(`/${user?.user.role}/dashboard`);
-      //router.push(`/${user?.user.role}/categories`); // Redirect if already authenticated
     }
   }, [status, router, user]);
 

@@ -9,15 +9,15 @@ import { JWT } from 'next-auth/jwt';
 
 declare module 'next-auth' {
   interface User {
-    id: string; // Include your user ID type
-    role: string; // Include your user role type
+    id: string;
+    role: string;
     firstName: string;
     lastName: string;
     hasAnswers: boolean;
   }
 
   interface Session {
-    user: User; // Extend the user interface to include your custom properties
+    user: User;
   }
 }
 
@@ -35,7 +35,6 @@ export const authOptions: AuthOptions = {
         if (!credentials || !credentials.email || !credentials.password) {
           throw new Error('Invalid credentials');
         }
-
         await connectToDatabase();
         const user = await User.findOne({ email: credentials.email });
 
@@ -120,7 +119,7 @@ export const authOptions: AuthOptions = {
           token.firstName = retrievedUser.firstName || user.name;
           token.lastName = retrievedUser.lastName;
           token.role = retrievedUser.role || 'customer';
-          token.hasAnswers = retrievedUser.questonnaires?.length > 0;
+          token.hasAnswers = retrievedUser.questionnaires?.length > 0;
         }
       }
       return token;
@@ -138,7 +137,7 @@ export const authOptions: AuthOptions = {
         email: token.email as string,
         firstName: (token.firstName as string) || token.name || '',
         lastName: (token.lastName as string) || '',
-        hasAnswers: (token.hasAnswers as boolean) || false,
+        hasAnswers: token.hasAnswers as boolean,
       };
 
       return session;

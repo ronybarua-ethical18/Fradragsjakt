@@ -1,12 +1,11 @@
 'use client';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { trpc } from '@/utils/trpc';
 import QuestionnairesStepper from '@/components/QuestionnairesStepper';
-import { signIn, useSession } from 'next-auth/react';
-import { ApiResponse } from '@/server/db/types';
-import { IUser } from '@/server/db/interfaces/user';
+import { useSession } from 'next-auth/react';
+import Loading from '@/app/loading';
 
 export type SelectedAnswer = {
   question: string;
@@ -15,10 +14,9 @@ export type SelectedAnswer = {
 export default function Onboard() {
   const router = useRouter();
   const { data: user, status } = useSession();
-  const [verifiedUser] = useState<ApiResponse<IUser>>();
-  console.log('verifiedUser__', verifiedUser);
   const [loading, setLoading] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswer[]>([]);
+  const hasToasted = useRef(false);
 
   const updateQuestionnaires = trpc.users.updateUser.useMutation();
 
@@ -40,32 +38,34 @@ export default function Onboard() {
 
   const handleComplete = async () => {
     setLoading(true);
-    await signIn(
-      'credentials',
-      {
-        redirect: false,
-        email: verifiedUser?.data?.email,
-        password: verifiedUser?.data?.password,
-      },
-      {}
-    );
+    mutateUpdateQestionnaires();
   };
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      mutateUpdateQestionnaires();
+    if (status === 'unauthenticated' && !hasToasted.current) {
+      toast.error('You are not logged in yet!');
+      hasToasted.current = true;
+      router.push('/login');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+    if (status === 'authenticated' && user?.user.role && user.user.hasAnswers) {
+      router.push(`/${user?.user.role}/dashboard`);
+    }
+  }, [status, user, router]);
 
   return (
-    <div className="min-h-screen ">
-      <QuestionnairesStepper
-        selectedAnswers={selectedAnswers}
-        setSelectedAnswers={setSelectedAnswers}
-        handleComplete={handleComplete}
-        loading={loading}
-      />
-    </div>
+    <>
+      {status !== 'authenticated' ? (
+        <Loading />
+      ) : (
+        <div className="min-h-screen ">
+          <QuestionnairesStepper
+            selectedAnswers={selectedAnswers}
+            setSelectedAnswers={setSelectedAnswers}
+            handleComplete={handleComplete}
+            loading={loading}
+          />
+        </div>
+      )}
+    </>
   );
 }

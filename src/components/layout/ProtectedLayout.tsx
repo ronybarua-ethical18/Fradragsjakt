@@ -15,7 +15,11 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user || status !== 'authenticated') {
+    if (
+      status !== 'authenticated' ||
+      !user.user.role ||
+      !user.user.hasAnswers
+    ) {
       router.push('/login');
     }
     if (status === 'loading') return;
