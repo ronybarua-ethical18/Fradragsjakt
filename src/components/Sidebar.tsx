@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   return (
     <div
       ref={menuRef}
-      className="hidden md:block w-[250px] max-h-[calc(100vh-56px)] px-4 py-12 bg-white border border-[#EEF0F4] rounded-b-lg"
+      className="hidden md:block w-[250px] h-[calc(100vh-84px)] px-4 py-12 bg-white border border-[#EEF0F4] rounded-b-2xl"
     >
       <div className="flex flex-col h-full justify-between">
         <nav className="grid items-start text-sm font-medium gap-2">
@@ -87,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
                     <div className="ml-4 space-y-2 mt-2">
                       {subItems.map(({ href: subHref, label: subLabel }) => (
                         <Link
-                          href={'#'}
+                          href={`/${role}/${subHref}`}
                           key={subLabel}
                           onClick={() => handleMenuClick(subHref)}
                           className={cn(
@@ -110,7 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
             ) : (
               <Link
                 key={href}
-                href={'#'}
+                href={`/${role}/${href}`}
                 onClick={() => handleMenuClick(href)}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 hover:bg-violet-100 py-2 text-muted-foreground transition-all hover:text-primary w-full text-left',

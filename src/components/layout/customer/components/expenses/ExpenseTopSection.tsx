@@ -1,10 +1,16 @@
-import React from 'react';
-import { IoMdAdd } from 'react-icons/io';
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
 import ExpenseStatsByType from './ExpenseStatsByType';
 import { expenseType } from '@/utils/dummy';
 import ExpenseType from './ExpenseType';
+import PlusIcon from '../../../../../../public/images/expenses/plus.png';
+import ExpenseModal from '../../../../SharedModal';
+import ExpenseUploadFile from './ExpenseUploadFile';
 
 function ExpenseTopSection() {
+  const [isModalOpen, setModalOpen] = useState(false);
   return (
     <div className="grid grid-cols-2 gap-3">
       <div className="grid grid-cols-2 gap-3">
@@ -32,10 +38,27 @@ function ExpenseTopSection() {
               quantity={expense.quantity}
             />
           ))}
-          <div className="text-white flex items-center justify-center bg-[#5B52F9] p-4 rounded-xl font-bold">
-            <IoMdAdd className="font-bold mr-2" /> More
+          <div
+            className="text-white flex items-center justify-center bg-[#5B52F9] p-4 rounded-xl font-bold cursor-pointer"
+            onClick={() => setModalOpen(true)}
+          >
+            <Image src={PlusIcon} alt="Plus icon" className="mr-3" /> More
           </div>
         </div>
+      </div>
+      <div className="bg-white z-50">
+        <ExpenseModal
+          open={isModalOpen}
+          onOpenChange={setModalOpen}
+          customClassName="max-w-[500px]"
+        >
+          <div className="bg-white">
+            <h1 className="font-bold text-xl text-[#5B52F9] mb-4">
+              Upload receipt as attachment
+            </h1>
+            <ExpenseUploadFile />
+          </div>
+        </ExpenseModal>
       </div>
     </div>
   );

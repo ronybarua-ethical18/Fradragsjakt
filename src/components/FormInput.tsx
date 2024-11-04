@@ -15,12 +15,13 @@ type Option = {
 
 export interface FormInputProps {
   name: string;
-  type: 'text' | 'email' | 'password' | 'select';
+  type: 'text' | 'email' | 'password' | 'select' | 'number';
   placeholder?: string;
   options?: Option[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<any>;
+  control?: Control<any>;
   required?: boolean;
+  customClassName?: string;
 }
 export function FormInput({
   name,
@@ -29,6 +30,7 @@ export function FormInput({
   options = [],
   control,
   required = false,
+  customClassName,
 }: FormInputProps) {
   if (type === 'select') {
     return (
@@ -38,7 +40,7 @@ export function FormInput({
         rules={{ required }}
         render={({ field }) => (
           <Select value={field.value} onValueChange={field.onChange}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className={`w-full ${customClassName}`}>
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -66,7 +68,7 @@ export function FormInput({
           {...field}
           type={type}
           placeholder={placeholder}
-          className="w-full p-2 border border-gray-300  text-sm placeholder:text-muted-foreground rounded-md"
+          className={`w-full p-2 border border-gray-300  text-sm placeholder:text-muted-foreground rounded-md ${customClassName}`}
           required={required}
         />
       )}

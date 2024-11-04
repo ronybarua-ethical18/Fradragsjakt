@@ -13,9 +13,11 @@ const Error: React.FC<ErrorProps> = ({ error, reset }) => {
   }, [error]);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen items-center justify-center">
       <h2>Something went wrong!</h2>
-      <button onClick={reset}>Try again</button>
+      <button onClick={reset} className="text-blue-500 underline">
+        Try again
+      </button>
     </div>
   );
 };

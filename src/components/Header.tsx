@@ -88,7 +88,7 @@ const Header = () => (
       </SheetContent>
     </Sheet>
     <div className="w-full flex-1 justify-end">
-      <Search />
+      <Search className={''} />
     </div>
     {/* <ModeToggle /> */}
     <DropdownMenu>
