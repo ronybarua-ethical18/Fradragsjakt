@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Sidebar from '../Sidebar';
@@ -15,15 +14,11 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (
-      status !== 'authenticated' ||
-      !user.user.role ||
-      !user.user.hasAnswers
-    ) {
+    if (status !== 'authenticated') {
       router.push('/login');
     }
     if (status === 'loading') return;
-  }, [status, router, user]);
+  }, [status, router]);
 
   return (
     <div className="h-screen fixed w-full">

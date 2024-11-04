@@ -26,7 +26,6 @@ export default function Onboard() {
       {
         onSuccess: () => {
           toast.success('Congrats! you have successfully onboarded');
-          setLoading(false);
           router.push(`/${user?.user.role}/dashboard`);
         },
         onError: (error) => {
@@ -40,6 +39,7 @@ export default function Onboard() {
     setLoading(true);
     mutateUpdateQestionnaires();
   };
+  const { data: fetcheduser } = trpc.users.getUserByEmail.useQuery();
 
   useEffect(() => {
     if (status === 'unauthenticated' && !hasToasted.current) {
@@ -47,10 +47,14 @@ export default function Onboard() {
       hasToasted.current = true;
       router.push('/login');
     }
-    if (status === 'authenticated' && user?.user.role && user.user.hasAnswers) {
+    if (
+      status === 'authenticated' &&
+      user?.user.role &&
+      fetcheduser?.questionnaires.length > 0
+    ) {
       router.push(`/${user?.user.role}/dashboard`);
     }
-  }, [status, user, router]);
+  }, [status, user, router, fetcheduser?.questionnaires]);
 
   return (
     <>
