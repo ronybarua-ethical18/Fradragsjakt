@@ -14,14 +14,14 @@ import CompanyLogo from '@/components/CompanyLogo';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { data: user, status } = useSession(); // Track session state
+  const { data: user, status } = useSession();
 
-  const [loading, setLoading] = useState(false); // Local loading state
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Start loader
+    setLoading(true);
     const result = await signIn('credentials', {
       redirect: false,
       email,
@@ -33,13 +33,22 @@ export default function Login() {
     } else {
       toast.success('Login Successful', { duration: 1000 });
     }
-    setLoading(false); // Stop loader
+    setLoading(false);
   };
 
   useEffect(() => {
-    if (status === 'authenticated' && user.user.role) {
-      router.push(`/${user?.user.role}/dashboard`); // Redirect if already authenticated
-      //router.push(`/${user?.user.role}/categories`); // Redirect if already authenticated
+    if (
+      status === 'authenticated' &&
+      user.user.role &&
+      !user?.user.hasAnswers
+    ) {
+      router.push(`/onboard`);
+    } else if (
+      status === 'authenticated' &&
+      user.user.role &&
+      user?.user.hasAnswers
+    ) {
+      router.push(`/${user?.user.role}/dashboard`);
     }
   }, [status, router, user]);
 
@@ -82,7 +91,7 @@ export default function Login() {
             />
           </div>
           <Button
-            disabled={loading || status === 'loading'} // Disable button during loading
+            disabled={loading || status === 'loading'}
             type="submit"
             className="w-full text-white"
           >
