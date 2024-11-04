@@ -4,19 +4,33 @@ import React from 'react';
 import { Label } from '@/components/ui/label';
 import { FormInput } from '@/components/FormInput';
 import { useForm } from 'react-hook-form';
+import { trpc } from '@/utils/trpc';
+import toast from 'react-hot-toast';
 
 function ExpenseRuleUpdateOrCreateContent() {
   const { handleSubmit, control } = useForm<FormData>();
 
+  const ruleMutation = trpc.rules.createRule.useMutation({
+    onSuccess: () => {
+      toast.success('Rule is created successfully');
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    ruleMutation.mutate(data);
+  };
   return (
     <div>
       <h1 className="font-bold text-xl text-[#5B52F9] mb-4">IF</h1>
-      <form onSubmit={handleSubmit(() => {})} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Label htmlFor="description">Description contain</Label>
           <FormInput
             type="text"
-            name="description-contain"
+            name="description_contains"
             // id="description"
             placeholder="Description contain"
             control={control}
@@ -29,16 +43,16 @@ function ExpenseRuleUpdateOrCreateContent() {
 
         <h1 className="font-bold text-xl text-[#5B52F9] mb-4">Then</h1>
         <div>
-          <Label htmlFor="expense-type">Expense type</Label>
+          <Label htmlFor="expense_type">Expense type</Label>
           <FormInput
-            name="expense-type"
+            name="expense_type"
             customClassName="w-full mt-2"
             type="select"
             control={control}
             placeholder="Select type"
             options={[
-              { title: 'Transport', value: 'transport' },
-              { title: 'Meals', value: 'meals' },
+              { title: 'Business', value: 'business' },
+              { title: 'Personal', value: 'personal' },
             ]}
             required
           />
@@ -54,6 +68,7 @@ function ExpenseRuleUpdateOrCreateContent() {
             options={[
               { title: 'Transport', value: 'transport' },
               { title: 'Meals', value: 'meals' },
+              { title: 'Gas', value: 'gas' },
             ]}
             required
           />
