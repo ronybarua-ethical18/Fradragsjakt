@@ -10,6 +10,7 @@ import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
 import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
 import SharedModal from '../../../../SharedModal';
+import ExpenseUploadFile from './ExpenseUploadFile';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -37,6 +38,13 @@ function ExpenseOverviewHeading() {
       <ExpenseRuleUpdateOrCreateContent />
     ) : modalContent.title === 'Show Write-offs' ? (
       <ExpenseWriteOffSummary />
+    ) : modalContent.title === 'Upload statements' ? (
+      <>
+        <h1 className="font-bold text-xl text-[#5B52F9] mb-4">
+          Upload receipt as attachment
+        </h1>
+        <ExpenseUploadFile />
+      </>
     ) : (
       <></>
     );
@@ -59,7 +67,7 @@ function ExpenseOverviewHeading() {
           </Button>
           <Button
             variant="purple"
-            onClick={() => handleButtonClick('Add expense')}
+            onClick={() => handleButtonClick('Upload statements')}
           >
             <IoMdAdd className="font-bold mr-2" /> Upload Statements
           </Button>
