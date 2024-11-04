@@ -50,12 +50,18 @@ function ExpenseOverviewHeading() {
           <strong className="text-[#00B386] font-semibold">+2%</strong> in
           August
         </h2>
-        <div className="mt-5">
+        <div className="mt-5 flex gap-2">
           <Button
             variant="purple"
             onClick={() => handleButtonClick('Add expense')}
           >
             <IoMdAdd className="font-bold mr-2" /> Add Expense
+          </Button>
+          <Button
+            variant="purple"
+            onClick={() => handleButtonClick('Add expense')}
+          >
+            <IoMdAdd className="font-bold mr-2" /> Upload Statements
           </Button>
         </div>
       </div>
