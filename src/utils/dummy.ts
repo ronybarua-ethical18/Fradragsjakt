@@ -12,6 +12,7 @@ import {
   Landmark,
   CircleDollarSign,
   Newspaper,
+  ListTree,
 } from 'lucide-react';
 import { FaUser } from 'react-icons/fa';
 import { FcLineChart, FcPackage } from 'react-icons/fc';
@@ -85,7 +86,11 @@ export const menuConfig = {
       href: '/expenses',
       label: 'Expenses',
       icon: HandCoins,
-      subItems: [{ href: '/categories', label: 'Categories' }],
+    },
+    {
+      href: '/categories',
+      label: 'Categories',
+      icon: ListTree,
     },
     {
       href: '/rules',
