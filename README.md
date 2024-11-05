@@ -32,7 +32,7 @@ To get started with **Fradragsjakt**, make sure you have [Node.js](https://nodej
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/fradragsjakt.git
+git clone https://github.com/razuahammed707/Fradragsjakt.git
 cd fradragsjakt
 ```
 
