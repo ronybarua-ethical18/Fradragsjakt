@@ -5,6 +5,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { ruleValidation } from './rules.validation';
 import { ApiResponse } from '@/server/db/types';
 import { z } from 'zod';
+// import Category from '@/server/db/models/category';
 
 export const rulesRouter = router({
   getRules: protectedProcedure
@@ -46,6 +47,8 @@ export const rulesRouter = router({
       if (!sessionUser || !sessionUser?.email || !sessionUser?.id) {
         throw new Error('You must be logged in to create this rule.');
       }
+
+      // const category = await Category.findOne({name})
 
       const createRule = await RuleModel.create({
         user: sessionUser?.id,
