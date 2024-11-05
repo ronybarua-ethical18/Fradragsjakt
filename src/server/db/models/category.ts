@@ -3,7 +3,7 @@ import { ICategory } from '../interfaces/category';
 
 const CategorySchema: Schema = new Schema<ICategory>(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, unique: true },
     created_by: {
       type: String,
       enum: ['USER', 'SYSTEM'],
@@ -14,6 +14,8 @@ const CategorySchema: Schema = new Schema<ICategory>(
 
   { timestamps: true }
 );
+
+CategorySchema.index({ title: 1 });
 
 const CategoryModel =
   mongoose.models.Category ||
