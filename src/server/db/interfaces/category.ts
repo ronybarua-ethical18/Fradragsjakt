@@ -1,7 +1,7 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export interface ICategory extends Document {
-  name: string;
+  title: string;
   created_by: string;
-  creator_id: ObjectId;
+  creator_id: Types.ObjectId;
 }

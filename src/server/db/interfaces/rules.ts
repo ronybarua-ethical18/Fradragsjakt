@@ -7,6 +7,7 @@ enum ExpenseType {
 export interface IRule extends Document {
   description_contains: string;
   expense_type: ExpenseType;
+  category_title: string;
   category: Types.ObjectId | string;
   user: Types.ObjectId;
 }
