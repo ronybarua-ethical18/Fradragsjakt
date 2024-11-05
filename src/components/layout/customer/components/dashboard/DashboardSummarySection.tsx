@@ -4,8 +4,12 @@ import ExpenseCard, { expenses } from './ExpenseCard';
 import DeductiveExpenses from './DeductiveExpenses';
 import SummaryChart from './SummaryChart';
 import YearlyExpenseGraph from './YearlyExpenseGraph';
+import { useSession } from 'next-auth/react';
 
 const DashboardSummarySection = () => {
+  const { data: session } = useSession();
+
+  console.log('logged user session', session);
   return (
     <div className="grid grid-cols-12 gap-2">
       <div className="col-span-5">
