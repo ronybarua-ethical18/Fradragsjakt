@@ -1,3 +1,5 @@
+# Fradragsjakt
+
 **Fradragsjakt** is a comprehensive tax management solution that assists freelancers, gig workers, independent contractors, families, and small business owners in tracking expenses and identifying tax write-offs. Built using Next.js, Fradragsjakt simplifies the process of managing expenses and maximizing eligible deductions, helping users save both time and money.
 
 ## Table of Contents
