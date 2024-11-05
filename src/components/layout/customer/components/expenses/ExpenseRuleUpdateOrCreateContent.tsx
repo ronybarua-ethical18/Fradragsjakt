@@ -7,19 +7,39 @@ import { useForm } from 'react-hook-form';
 import { trpc } from '@/utils/trpc';
 import toast from 'react-hot-toast';
 
-function ExpenseRuleUpdateOrCreateContent() {
-  const { handleSubmit, control } = useForm<FormData>();
+// Define the form data type to match the expected fields
+type RuleFormData = {
+  description_contains: string;
+  expense_type: 'business' | 'personal';
+  category: string;
+};
 
+type ExpenseRuleContentProps = {
+  modalClose?: (open: boolean) => void;
+};
+
+function ExpenseRuleUpdateOrCreateContent({
+  modalClose,
+}: ExpenseRuleContentProps) {
+  const { handleSubmit, control } = useForm<RuleFormData>();
+
+  // Access the getRules query to enable invalidation
+  const utils = trpc.useContext();
   const ruleMutation = trpc.rules.createRule.useMutation({
     onSuccess: () => {
       toast.success('Rule is created successfully');
+      if (modalClose) {
+        modalClose(false);
+      }
+      // Invalidate and refetch getRules query
+      utils.rules.getRules.invalidate();
     },
     onError: (error) => {
       toast.error(error.message);
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: RuleFormData) => {
     ruleMutation.mutate(data);
   };
   return (

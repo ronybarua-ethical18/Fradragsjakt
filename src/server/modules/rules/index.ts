@@ -5,6 +5,8 @@ import { JwtPayload } from 'jsonwebtoken';
 import { ruleValidation } from './rules.validation';
 import { ApiResponse } from '@/server/db/types';
 import { z } from 'zod';
+import CategoryModel from '@/server/db/models/category';
+import mongoose from 'mongoose';
 // import Category from '@/server/db/models/category';
 
 export const rulesRouter = router({
@@ -48,11 +50,27 @@ export const rulesRouter = router({
         throw new Error('You must be logged in to create this rule.');
       }
 
-      // const category = await Category.findOne({name})
+      const categoryQuery = mongoose.Types.ObjectId.isValid(input.category)
+        ? { _id: input.category }
+        : { title: input.category };
+
+      const category = await CategoryModel.findOneAndUpdate(
+        {
+          ...categoryQuery,
+          creator_id: sessionUser.id,
+        },
+        { $setOnInsert: { creator_id: sessionUser.id, title: input.category } },
+        {
+          new: true,
+          upsert: true,
+        }
+      );
 
       const createRule = await RuleModel.create({
-        user: sessionUser?.id,
         ...input,
+        user: sessionUser?.id,
+        category: category?._id,
+        category_title: category?.title,
       });
 
       return {

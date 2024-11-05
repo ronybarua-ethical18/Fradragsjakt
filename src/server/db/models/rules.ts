@@ -9,6 +9,10 @@ const RuleSchema: Schema = new Schema<IRule>(
       enum: ['personal', 'business'],
       required: true,
     },
+    category_title: {
+      type: String,
+      required: true,
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'category',
@@ -22,6 +26,9 @@ const RuleSchema: Schema = new Schema<IRule>(
   },
   { timestamps: true }
 );
+
+RuleSchema.index({ category_title: 1 });
+RuleSchema.index({ description_contains: 1 });
 
 const RuleModel =
   mongoose.models.rule || mongoose.model<IRule>('rule', RuleSchema);

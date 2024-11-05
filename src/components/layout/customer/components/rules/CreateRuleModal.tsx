@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 import { MdOutlineSignpost } from 'react-icons/md';
 import ExpenseRuleUpdateOrCreateContent from '../expenses/ExpenseRuleUpdateOrCreateContent';
+import SharedModal from '@/components/SharedModal';
 
 export default function CreateRuleModal() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setModalOpen(true);
+  };
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="purple">
-          <MdOutlineSignpost size={20} className="mr-2" />
-          Create Rule
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[564px]">
-        <ExpenseRuleUpdateOrCreateContent />
-      </DialogContent>
-    </Dialog>
+    <>
+      <Button variant="purple" onClick={handleButtonClick}>
+        <MdOutlineSignpost size={20} className="mr-2" />
+        Create Rule
+      </Button>
+      <div className="bg-white z-50">
+        <SharedModal
+          open={isModalOpen}
+          onOpenChange={setModalOpen}
+          customClassName="max-w-[500px]"
+        >
+          <div className="bg-white">
+            <ExpenseRuleUpdateOrCreateContent modalClose={setModalOpen} />
+          </div>
+        </SharedModal>
+      </div>
+    </>
   );
 }
