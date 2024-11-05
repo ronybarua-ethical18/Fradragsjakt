@@ -1,38 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+---
 
-## Getting Started
+# Fradragsjakt
 
-First, run the development server:
+**Fradragsjakt** is a comprehensive tax management solution that assists freelancers, gig workers, independent contractors, families, and small business owners in tracking expenses and identifying tax write-offs. Built using Next.js, Fradragsjakt simplifies the process of managing expenses and maximizing eligible deductions, helping users save both time and money.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Technologies](#technologies)
+- [License](#license)
+
+---
+
+## Overview
+
+Taxes can be complex, especially for those managing their own business or freelancing. **Fradragsjakt** was designed to ease the burden of tax management by providing tools to track expenses, categorize transactions, and identify deductible items that may otherwise be missed. Whether you're self-employed or managing a family business, Fradragsjakt empowers you with the tools needed to simplify and optimize your tax journey.
+
+## Features
+
+- **Expense Tracking**: Log, organize, and categorize business expenses efficiently.
+- **Write-Off Identification**: Discover eligible tax deductions based on categorized transactions.
+- **Multi-User Profiles**: Manage multiple profiles for different family members or business entities.
+- **Detailed Reports**: Export summaries of expenses and deductions for tax filing.
+- **Data Privacy**: Your financial data remains secure and private.
+
+## Installation
+
+To get started with **Fradragsjakt**, make sure you have [Node.js](https://nodejs.org/) installed.
+
+### Step 1: Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/fradragsjakt.git
+cd fradragsjakt
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Step 2: Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Fradragsjakt** uses **Yarn** as the package manager. Run the following command to install all dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+yarn install
+```
 
-## Learn More
+### Step 3: Run the Development Server
 
-To learn more about Next.js, take a look at the following resources:
+Once dependencies are installed, start the development server with:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Visit [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Add Expenses**: Log expenses by filling out the relevant fields in the expense entry form.
+2. **Categorize Transactions**: Assign each expense a category to determine potential deductions.
+3. **Generate Reports**: View and export reports on tax-deductible expenses for easy filing.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Technologies
 
-update
+- **Next.js**: Framework for building the user interface
+- **React**: JavaScript library for creating interactive UIs
+- **Yarn**: Dependency management
+- **Tailwind CSS** (optional): For utility-first CSS styling
+- **TypeScript** (optional): Ensures type safety throughout the codebase
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Thank you for the read.
