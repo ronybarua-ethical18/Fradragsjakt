@@ -5,8 +5,8 @@ import { ContentForeignIncome } from './components/write-offs/modals-content/Con
 import { ContentHealthFamily } from './components/write-offs/modals-content/ContentHealthFamily';
 import { ContentHobby } from './components/write-offs/modals-content/ContentHobby';
 import { ContentWork } from './components/write-offs/modals-content/ContentWork';
-import { FilterContent } from './components/expenses/newModal/FilterContent';
-import { HeaderMappingModal } from './components/expenses/newModal/HeaderMappingModal';
+import { FilterContent } from './components/expenses/ExpenseFilterContent';
+import { HeaderMappingModal } from './components/expenses/ExpenseMappingModal';
 
 export default function Testmodal() {
   return (
