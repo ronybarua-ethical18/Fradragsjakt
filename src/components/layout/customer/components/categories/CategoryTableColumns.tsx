@@ -13,23 +13,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import ArrowUpDown from '../../../../../../public/sort.png';
+import { EnumValues } from 'zod';
 
-// Define the data structure for a category
 export type Category = {
-  id: string;
-  serialNo: number;
+  _id: string;
   name: string;
-  createdBy: 'USER' | 'SYSTEM';
+  created_by: EnumValues;
 };
 
-// Define columns for the category table
 export const CategoryTableColumns: ColumnDef<Category>[] = [
   {
-    accessorKey: 'serialNo',
     header: 'Serial no.',
-    cell: ({ row }) => (
-      <div className="text-left pl-4">{`${row.getValue('serialNo')}.`}</div>
-    ),
+    cell: ({ row }) => {
+      const serial_no = row.index + 1;
+      return <div className="text-left pl-4">{`${serial_no}.`}</div>;
+    },
   },
   {
     accessorKey: 'name',
@@ -47,11 +45,11 @@ export const CategoryTableColumns: ColumnDef<Category>[] = [
     ),
   },
   {
-    accessorKey: 'createdBy',
+    accessorKey: 'created_by',
     header: 'Created by',
     cell: ({ row }) => (
       <div className="text-left text-xs pl-4 font-medium text-[#00104B]">
-        {row.getValue('createdBy')}
+        {row.getValue('created_by')}
       </div>
     ),
   },
@@ -71,7 +69,7 @@ export const CategoryTableColumns: ColumnDef<Category>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(category.id)}
+              onClick={() => navigator.clipboard.writeText(category._id)}
             >
               Copy category ID
             </DropdownMenuItem>

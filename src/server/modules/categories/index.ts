@@ -7,12 +7,12 @@ import { categoryValidation } from './categories.validation';
 import Category from '@/server/db/models/category';
 
 export const categoryRouter = router({
-  getUsers: protectedProcedure.query(async ({ ctx }) => {
+  getCategories: protectedProcedure.query(async ({ ctx }) => {
     const loggedUser = ctx.user as JwtPayload;
-    const users = await User.find({});
+    const categories = await Category.find({});
 
     return {
-      users,
+      categories,
       loggedUser,
     };
   }),
@@ -57,8 +57,8 @@ export const categoryRouter = router({
     .input(categoryValidation.categorySchema)
     .mutation(async ({ ctx, input }) => {
       const { name } = input;
-
       const sessionUser = ctx.user as JwtPayload;
+
       if (!sessionUser || !sessionUser?.email) {
         throw new Error('You must be logged in to update this data.');
       }
@@ -67,6 +67,7 @@ export const categoryRouter = router({
         name,
         creator_id: sessionUser.id,
       });
+
       await category.save();
 
       if (!category) {
