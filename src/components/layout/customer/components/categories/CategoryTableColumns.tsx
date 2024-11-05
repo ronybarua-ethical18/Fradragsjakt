@@ -17,7 +17,7 @@ import { EnumValues } from 'zod';
 
 export type Category = {
   _id: string;
-  name: string;
+  tile: string;
   created_by: EnumValues;
 };
 
@@ -30,7 +30,7 @@ export const CategoryTableColumns: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'title',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -41,7 +41,7 @@ export const CategoryTableColumns: ColumnDef<Category>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="text-left pl-4">{row.getValue('name')}</div>
+      <div className="text-left pl-4">{row.getValue('title')}</div>
     ),
   },
   {

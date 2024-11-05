@@ -11,14 +11,14 @@ import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 
 export type FormData = {
-  name: string;
+  title: string;
 };
 export default function CategoryTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { handleSubmit, control, reset } = useForm<FormData>();
-  const totalPages = 10;
+  const utils = trpc.useUtils();
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -28,7 +28,9 @@ export default function CategoryTable() {
       toast.success('Category created successfully!', {
         duration: 4000,
       });
+      utils.categories.getCategories.invalidate();
       reset();
+      setOpen(false);
       setLoading(false);
     },
     onError: (error) => {
@@ -42,9 +44,14 @@ export default function CategoryTable() {
     mutation.mutate(data);
   };
 
-  const { data } = trpc.categories.getCategories.useQuery();
-  console.log(data);
-
+  const { data } = trpc.categories.getCategories.useQuery(
+    {
+      page: currentPage,
+    },
+    {
+      keepPreviousData: true,
+    }
+  );
   return (
     <div className="rounded-2xl mt-2 p-6 bg-white">
       <div className="flex justify-between items-center mb-4  ">
@@ -59,12 +66,12 @@ export default function CategoryTable() {
       <div className="mt-10">
         <SharedDataTable
           columns={CategoryTableColumns}
-          data={data?.categories ?? []}
+          data={data?.data ?? []}
         />
         <div className="mt-10">
           <SharedPagination
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={data?.pagination?.totalPages ?? 1}
             onPageChange={handlePageChange}
           />
         </div>

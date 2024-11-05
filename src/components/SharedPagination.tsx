@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { cn } from '@/lib/utils';
 
 interface SharedPaginationProps {
   currentPage: number;
@@ -47,8 +48,16 @@ const SharedPagination: React.FC<SharedPaginationProps> = ({
         (page >= currentPage - 1 && page <= currentPage + 1)
       ) {
         items.push(
-          <PaginationItem key={page} active={page === currentPage}>
-            <PaginationLink href="#" onClick={() => handlePageChange(page)}>
+          <PaginationItem key={page}>
+            <PaginationLink
+              href="#"
+              onClick={() => handlePageChange(page)}
+              className={cn(
+                page === currentPage &&
+                  'bg-primary text-white hover:bg-primary/90 hover:text-primary-foreground'
+              )}
+              aria-current={page === currentPage ? 'page' : undefined}
+            >
               {page}
             </PaginationLink>
           </PaginationItem>
@@ -67,11 +76,25 @@ const SharedPagination: React.FC<SharedPaginationProps> = ({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" onClick={handlePrevious} />
+          <PaginationPrevious
+            href="#"
+            onClick={handlePrevious}
+            className={cn(
+              currentPage === 1 && 'pointer-events-none opacity-50'
+            )}
+            aria-disabled={currentPage === 1}
+          />
         </PaginationItem>
         {renderPaginationItems()}
         <PaginationItem>
-          <PaginationNext href="#" onClick={handleNext} />
+          <PaginationNext
+            href="#"
+            onClick={handleNext}
+            className={cn(
+              currentPage === totalPages && 'pointer-events-none opacity-50'
+            )}
+            aria-disabled={currentPage === totalPages}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
