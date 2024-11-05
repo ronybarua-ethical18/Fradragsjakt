@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import SelectField from './SelectField'; // Import your new SelectField component
+import SelectField from './ExpenseSelectField'; // Import your new SelectField component
 
 export function HeaderMappingModal() {
   const descriptionItems = [
