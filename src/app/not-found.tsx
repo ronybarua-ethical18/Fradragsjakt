@@ -13,7 +13,7 @@ const NotFound: React.FC = () => {
         </h3>
         <Link href="/">
           <Button className="text-white" variant={'purple'}>
-            Return Home
+            Return to Home
           </Button>
         </Link>
       </div>
