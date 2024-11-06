@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { FormInput } from '@/components/FormInput';
 
-// Define types for our data structures
 type FormData = {
   Description: string;
   Amount: string;
@@ -58,11 +57,9 @@ const ExpenseUploadStatementContent: React.FC = () => {
 
     setColumns(csvColumns);
 
-    // Filter out empty rows
     const processedData: CSVRowData[] = data
       .slice(1)
       .filter((row) => {
-        // Check if row has any non-empty values
         return row.slice(1).some((cell) => cell && cell.trim() !== '');
       })
       .map((row, rowIndex) => {
@@ -76,7 +73,6 @@ const ExpenseUploadStatementContent: React.FC = () => {
           { key: `row_${rowIndex}` }
         );
 
-        // Only return rows that have at least one non-empty value
         return Object.keys(processedRow).length > 1 ? processedRow : null;
       })
       .filter((row): row is CSVRowData => row !== null);
@@ -97,7 +93,6 @@ const ExpenseUploadStatementContent: React.FC = () => {
         const description = row[`column_${descriptionColumnIndex}`];
         const amount = row[`column_${amountColumnIndex}`];
 
-        // Only include rows with both description and valid amount
         if (description && amount) {
           const parsedAmount = parseFloat(amount.replace(/[^\d.-]/g, ''));
           if (!isNaN(parsedAmount)) {
@@ -115,7 +110,6 @@ const ExpenseUploadStatementContent: React.FC = () => {
     console.log('Mapped Data:', mapped);
   };
 
-  // Memoize options to prevent unnecessary re-renders
   const columnOptions = React.useMemo(
     () =>
       columns.map((column) => ({
