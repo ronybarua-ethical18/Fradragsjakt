@@ -1,4 +1,3 @@
-// import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
 import { Label } from '@/components/ui/label';
@@ -14,25 +13,29 @@ type RuleFormData = {
   category: string;
 };
 
+type CategoryType = { title: string; value: string };
+
 type ExpenseRuleContentProps = {
   modalClose?: (open: boolean) => void;
+  categories?: CategoryType[];
 };
 
 function ExpenseRuleUpdateOrCreateContent({
   modalClose,
+  categories = [],
 }: ExpenseRuleContentProps) {
-  const { handleSubmit, control } = useForm<RuleFormData>();
+  const { handleSubmit, control } = useForm<RuleFormData>({
+    defaultValues: { expense_type: 'business' }, // Optional default value
+  });
 
-  // Access the getRules query to enable invalidation
   const utils = trpc.useContext();
   const ruleMutation = trpc.rules.createRule.useMutation({
     onSuccess: () => {
-      toast.success('Rule is created successfully');
+      toast.success('Rule created successfully');
       if (modalClose) {
         modalClose(false);
       }
-      // Invalidate and refetch getRules query
-      utils.rules.getRules.invalidate();
+      utils.rules.getRules.invalidate(); // Invalidate and refetch getRules query
     },
     onError: (error) => {
       toast.error(error.message);
@@ -42,20 +45,30 @@ function ExpenseRuleUpdateOrCreateContent({
   const onSubmit = (data: RuleFormData) => {
     ruleMutation.mutate(data);
   };
+
+  const defaultCategories = [
+    { title: 'Transport', value: 'Transport' },
+    { title: 'Meals', value: 'Meals' },
+    { title: 'Gas', value: 'Gas' },
+  ];
+
+  const manipulatedCategories = Array.from(
+    new Map(
+      [...categories, ...defaultCategories].map((cat) => [cat.value, cat])
+    ).values()
+  );
+
   return (
     <div>
       <h1 className="font-bold text-xl text-[#5B52F9] mb-4">IF</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <Label htmlFor="description">Description contain</Label>
+          <Label htmlFor="description_contains">Description contain</Label>
           <FormInput
             type="text"
             name="description_contains"
-            // id="description"
             placeholder="Description contain"
             control={control}
-            //   value={email}
-            //   onChange={(e) => setEmail(e.target.value)}
             customClassName="w-full mt-2"
             required
           />
@@ -85,30 +98,20 @@ function ExpenseRuleUpdateOrCreateContent({
             type="select"
             control={control}
             placeholder="Select category"
-            options={[
-              { title: 'Transport', value: 'transport' },
-              { title: 'Meals', value: 'meals' },
-              { title: 'Gas', value: 'gas' },
-            ]}
+            options={manipulatedCategories}
             required
           />
         </div>
 
         <div className="py-3">
-          <Button
-            // disabled={loading || status === 'loading'} // Disable button during loading
-            type="submit"
-            className="w-full text-white"
-          >
-            {/* {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
+          <Button type="submit" className="w-full text-white">
             Apply Update
           </Button>
           <Button
-            // disabled={loading || status === 'loading'} // Disable button during loading
-            type="submit"
+            type="button" // Change to button to avoid form submission
             className="w-full bg-[#F0EFFE] text-[#FF4444] hover:bg-[#F0EFFE] mt-3"
+            onClick={() => modalClose && modalClose(false)} // Close modal on discard
           >
-            {/* {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
             Discard
           </Button>
         </div>

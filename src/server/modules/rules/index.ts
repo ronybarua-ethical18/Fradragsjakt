@@ -6,8 +6,6 @@ import { ruleValidation } from './rules.validation';
 import { ApiResponse } from '@/server/db/types';
 import { z } from 'zod';
 import CategoryModel from '@/server/db/models/category';
-import mongoose from 'mongoose';
-// import Category from '@/server/db/models/category';
 
 export const rulesRouter = router({
   getRules: protectedProcedure
@@ -60,9 +58,7 @@ export const rulesRouter = router({
           throw new Error('You must be logged in to create this rule.');
         }
 
-        const categoryQuery = mongoose.Types.ObjectId.isValid(input.category)
-          ? { _id: input.category }
-          : { title: input.category };
+        const categoryQuery = { title: input.category };
 
         const category = await CategoryModel.findOneAndUpdate(
           {
