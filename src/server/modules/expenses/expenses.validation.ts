@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const expenseSchema = z.object({
+const createExpenseSchema = z.object({
   description: z.string({
     required_error: 'Description is required',
   }),
@@ -15,4 +15,4 @@ const expenseSchema = z.object({
   }),
 });
 
-export const expenseValidation = { expenseSchema };
+export const expenseValidation = { createExpenseSchema };

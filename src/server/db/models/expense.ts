@@ -33,6 +33,6 @@ const ExpenseSchema = new Schema<IExpense>(
   }
 );
 
-const Expense = model<IExpense>('expense', ExpenseSchema);
+const ExpenseModel = model<IExpense>('expense', ExpenseSchema);
 
-export default Expense;
+export default ExpenseModel;
