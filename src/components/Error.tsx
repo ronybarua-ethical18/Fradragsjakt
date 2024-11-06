@@ -2,7 +2,9 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 interface ErrorProps {
   error: Error;
@@ -10,35 +12,40 @@ interface ErrorProps {
 }
 
 const Error: React.FC<ErrorProps> = ({ error, reset }) => {
-  const router = useRouter();
-
   useEffect(() => {
     console.error(error);
   }, [error]);
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg text-center">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-white p-6">
+      <div className="rounded-lg p-8 max-w-lg text-center w-[564px]">
+        <h2 className="text-2xl font-bold text-black mb-4 justify-items-center">
+          {' '}
+          <Image
+            src="/ErrorFace.svg"
+            width={160}
+            height={160}
+            alt="Picture of the error"
+          />
           {error.message}
         </h2>
-        <p className="text-gray-700 mb-6">
-          An unexpected error occurred. Please try again, or go back to the
-          dashboard.
+        <p className="text-gray-600 mb-6 text-sm">
+          Please try again later or contact support if the problem persists.
         </p>
+
         <div className="flex space-x-4 justify-center">
-          <button
+          <Button
+            className="px-6 py-3 text-white rounded-md font-semibold transition duration-300 ease-in-out w-full"
+            variant={'purple'}
             onClick={reset}
-            className="px-6 py-3 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition duration-300 ease-in-out"
           >
-            Try Again
-          </button>
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="px-6 py-3 bg-gray-300 text-gray-700 rounded-md font-semibold hover:bg-gray-400 transition duration-300 ease-in-out"
-          >
-            Go Back to Dashboard
-          </button>
+            Try again
+          </Button>
+          <Link href="/">
+            <Button className="text-white" variant={'purple'}>
+              Return to Home
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
