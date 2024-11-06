@@ -62,7 +62,7 @@ export function SharedDataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="rounded-md border-none">
+      <div className="rounded-md border-none h-[500px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -10,6 +10,7 @@ import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
 import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
 import SharedModal from '../../../../SharedModal';
+import ExpenseUploadStatementContent from './ExpenseUploadStatementContent';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -37,6 +38,8 @@ function ExpenseOverviewHeading() {
       <ExpenseRuleUpdateOrCreateContent />
     ) : modalContent.title === 'Show Write-offs' ? (
       <ExpenseWriteOffSummary />
+    ) : modalContent.title === 'Upload statements' ? (
+      <ExpenseUploadStatementContent />
     ) : (
       <></>
     );
@@ -50,12 +53,18 @@ function ExpenseOverviewHeading() {
           <strong className="text-[#00B386] font-semibold">+2%</strong> in
           August
         </h2>
-        <div className="mt-5">
+        <div className="mt-5 flex gap-2">
           <Button
             variant="purple"
             onClick={() => handleButtonClick('Add expense')}
           >
             <IoMdAdd className="font-bold mr-2" /> Add Expense
+          </Button>
+          <Button
+            variant="purple"
+            onClick={() => handleButtonClick('Upload statements')}
+          >
+            <IoMdAdd className="font-bold mr-2" /> Upload Statements
           </Button>
         </div>
       </div>

@@ -5,6 +5,12 @@ export type ApiResponse<T> = {
   message: string;
   alreadyVerified?: boolean;
   status?: number;
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 };
 
 export type ApiErrorResponse = {

@@ -1,16 +1,19 @@
-import * as path from "path";
+import * as path from 'path';
+import { create } from 'express-handlebars';
+
+const viewEngineInstance = create({
+  extname: '.handlebars',
+  partialsDir: path.resolve(
+    process.cwd(),
+    'src/server/services/mail/templates'
+  ),
+  defaultLayout: false,
+});
 
 const handlebarOptions = {
-  viewEngine: {
-    extName: ".handlebars",
-    partialsDir: path.resolve(
-      process.cwd(),
-      "src/server/services/mail/templates"
-    ), // Corrected path
-    defaultLayout: false,
-  },
-  viewPath: path.resolve(process.cwd(), "src/server/services/mail/templates"), // Corrected path
-  extName: ".handlebars",
+  viewEngine: viewEngineInstance, // Pass the view engine instance
+  viewPath: path.resolve(process.cwd(), 'src/server/services/mail/templates'),
+  extName: '.handlebars',
 };
 
 export default handlebarOptions;

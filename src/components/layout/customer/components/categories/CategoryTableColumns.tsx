@@ -13,26 +13,24 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import ArrowUpDown from '../../../../../../public/sort.png';
+import { EnumValues } from 'zod';
 
-// Define the data structure for a category
 export type Category = {
-  id: string;
-  serialNo: number;
-  name: string;
-  createdBy: 'USER' | 'SYSTEM';
+  _id: string;
+  tile: string;
+  created_by: EnumValues;
 };
 
-// Define columns for the category table
 export const CategoryTableColumns: ColumnDef<Category>[] = [
   {
-    accessorKey: 'serialNo',
     header: 'Serial no.',
-    cell: ({ row }) => (
-      <div className="text-left pl-4">{`${row.getValue('serialNo')}.`}</div>
-    ),
+    cell: ({ row }) => {
+      const serial_no = row.index + 1;
+      return <div className="text-left pl-4">{`${serial_no}.`}</div>;
+    },
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'title',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -43,15 +41,15 @@ export const CategoryTableColumns: ColumnDef<Category>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="text-left pl-4">{row.getValue('name')}</div>
+      <div className="text-left pl-4">{row.getValue('title')}</div>
     ),
   },
   {
-    accessorKey: 'createdBy',
+    accessorKey: 'created_by',
     header: 'Created by',
     cell: ({ row }) => (
       <div className="text-left text-xs pl-4 font-medium text-[#00104B]">
-        {row.getValue('createdBy')}
+        {row.getValue('created_by')}
       </div>
     ),
   },
@@ -71,7 +69,7 @@ export const CategoryTableColumns: ColumnDef<Category>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(category.id)}
+              onClick={() => navigator.clipboard.writeText(category._id)}
             >
               Copy category ID
             </DropdownMenuItem>
