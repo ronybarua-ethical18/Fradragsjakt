@@ -54,6 +54,7 @@
     "nodemailer-express-handlebars": "^7.0.0",
     "react": "^18",
     "react-apexcharts": "^1.5.0",
+    "react-csv-reader": "^4.0.0",
     "react-dom": "^18",
     "react-dropzone": "^14.2.10",
     "react-hook-form": "^7.53.1",
