@@ -6,6 +6,8 @@ import { ruleValidation } from './rules.validation';
 import { ApiResponse } from '@/server/db/types';
 import { z } from 'zod';
 import CategoryModel from '@/server/db/models/category';
+import httpStatus from 'http-status';
+import { ApiError, AuthError } from '@/lib/exceptions';
 
 export const rulesRouter = router({
   getRules: protectedProcedure
@@ -39,12 +41,11 @@ export const rulesRouter = router({
           },
         } as ApiResponse<typeof rules>;
       } catch (error) {
-        console.error('Error fetching rules:', error);
-        return {
-          status: 500,
-          message: 'Failed to fetch rules',
-          data: null,
-        } as ApiResponse<null>;
+        console.log(error);
+        throw new ApiError(
+          httpStatus.INTERNAL_SERVER_ERROR,
+          'Something went wrong to fetch rules'
+        );
       }
     }),
 
@@ -55,7 +56,7 @@ export const rulesRouter = router({
         const sessionUser = ctx.user as JwtPayload;
 
         if (!sessionUser || !sessionUser?.email || !sessionUser?.id) {
-          throw new Error('You must be logged in to create this rule.');
+          throw new AuthError('You must be logged in to create this rule.');
         }
 
         const categoryQuery = { title: input.category };
@@ -87,12 +88,8 @@ export const rulesRouter = router({
           data: createRule,
         } as ApiResponse<typeof createRule>;
       } catch (error) {
-        console.error('Error creating rule:', error);
-        return {
-          message: 'Failed to create rule',
-          status: 500,
-          data: null,
-        } as ApiResponse<null>;
+        console.log(error);
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create rule');
       }
     }),
 });
