@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 const NotFound: React.FC = () => {
   return (
@@ -11,9 +12,9 @@ const NotFound: React.FC = () => {
           This link might be broken or corrupted.
         </h3>
         <Link href="/">
-          <button className="w-auto h-auto inline-block px-3 py-2 mt-1 text-sm bg-violet-100 rounded-md text-center">
-            Return Home
-          </button>
+          <Button className="text-white" variant={'purple'}>
+            Return to Home
+          </Button>
         </Link>
       </div>
     </div>
