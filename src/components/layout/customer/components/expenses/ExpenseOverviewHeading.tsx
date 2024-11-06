@@ -10,7 +10,7 @@ import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
 import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
 import SharedModal from '../../../../SharedModal';
-import ExpenseUploadFile from './ExpenseUploadFile';
+import ExpenseUploadStatementContent from './ExpenseUploadStatementContent';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -39,12 +39,7 @@ function ExpenseOverviewHeading() {
     ) : modalContent.title === 'Show Write-offs' ? (
       <ExpenseWriteOffSummary />
     ) : modalContent.title === 'Upload statements' ? (
-      <>
-        <h1 className="font-bold text-xl text-[#5B52F9] mb-4">
-          Upload receipt as attachment
-        </h1>
-        <ExpenseUploadFile />
-      </>
+      <ExpenseUploadStatementContent />
     ) : (
       <></>
     );
@@ -93,7 +88,6 @@ function ExpenseOverviewHeading() {
         </div>
       </div>
 
-      {/* ExpenseModal component */}
       <div className="bg-white z-50">
         <SharedModal
           open={isModalOpen}
