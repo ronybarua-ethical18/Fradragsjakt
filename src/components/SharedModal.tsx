@@ -3,6 +3,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import React from 'react';
+import { DialogTitle } from './ui/dialog';
 
 interface ModalProps {
   open: boolean;
@@ -24,6 +25,8 @@ const SharedModal: React.FC<ModalProps> = ({
       <Dialog.Content
         className={`fixed top-1/2 left-1/2 w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg ${customClassName || 'max-w-md'}`}
       >
+        <DialogTitle className="sr-only" />
+
         <div>{children}</div>
 
         <Dialog.Close asChild>
