@@ -7,6 +7,7 @@ import { Control, UseFormHandleSubmit } from 'react-hook-form';
 import { FormInput } from '@/components/FormInput';
 import { Loader2 } from 'lucide-react';
 import { FormData } from './CategoryTable';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 interface CategoryAddModalProps {
   open: boolean;
@@ -32,9 +33,9 @@ export default function CategoryAddModal({
       customClassName="max-w-[500px]"
     >
       <>
-        <h2 className="text-[#5B52F9] text-xl font-bold leading-tight mb-6">
+        <DialogTitle className="text-[#5B52F9] text-xl font-bold leading-tight mb-6">
           Add Category
-        </h2>
+        </DialogTitle>
 
         <>
           <Label className="block mb-2 text-[#101010] text-xs font-medium">
@@ -42,7 +43,7 @@ export default function CategoryAddModal({
           </Label>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <FormInput
-              name="name"
+              name="title"
               control={control}
               type="text"
               placeholder="Bills"

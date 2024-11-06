@@ -1,78 +1,171 @@
-import User from '@/server/db/models/user';
 import { protectedProcedure } from '@/server/middlewares/with-auth';
 import { router } from '@/server/trpc';
 import { JwtPayload } from 'jsonwebtoken';
-import { userValidation } from '../users/users.validation';
 import { categoryValidation } from './categories.validation';
 import Category from '@/server/db/models/category';
+import { ApiResponse } from '@/server/db/types';
+import { z } from 'zod';
 
 export const categoryRouter = router({
-  getUsers: protectedProcedure.query(async ({ ctx }) => {
-    const loggedUser = ctx.user as JwtPayload;
-    const users = await User.find({});
+  getCategories: protectedProcedure
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(10),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const loggedUser = ctx.user as JwtPayload;
+        const { page, limit } = input;
+        const skip = (page - 1) * limit;
 
-    return {
-      users,
-      loggedUser,
-    };
-  }),
+        const total = await Category.countDocuments({
+          creator_id: loggedUser?.id,
+        });
+        const categories = await Category.find({ creator_id: loggedUser?.id })
+          .skip(skip)
+          .limit(limit);
 
-  getUserByEmail: protectedProcedure.query(async ({ ctx }) => {
-    const sessionUser = ctx.user as JwtPayload;
-
-    if (!sessionUser || !sessionUser?.email) {
-      throw new Error('You must be logged in to access this data.');
-    }
-    const user = await User.findOne({ email: sessionUser.email });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-    return user;
-  }),
-
-  updateUser: protectedProcedure
-    .input(userValidation.userSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { questionnaires } = input;
-
-      const sessionUser = ctx.user as JwtPayload;
-      if (!sessionUser || !sessionUser?.email) {
-        throw new Error('You must be logged in to update this data.');
+        return {
+          status: 200,
+          message: 'Categories fetched successfully',
+          data: categories,
+          pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+          },
+        } as ApiResponse<typeof categories>;
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        throw new Error(`Failed to fetch categories: ${errorMessage}`);
       }
-
-      const user = await User.findOneAndUpdate(
-        { email: sessionUser.email },
-        { questionnaires: questionnaires },
-        { new: true }
-      );
-
-      if (!user) {
-        throw new Error('User not found');
-      }
-
-      return user;
     }),
+
+  deleteCategory: protectedProcedure
+    .input(categoryValidation.deleteCategorySchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { id } = input;
+        const sessionUser = ctx.user as JwtPayload;
+
+        if (!sessionUser?.email) {
+          throw new Error('Authentication required');
+        }
+
+        const category = await Category.findById(id);
+        if (!category) {
+          throw new Error('Category not found');
+        }
+
+        if (category.creator_id.toString() !== sessionUser.id) {
+          throw new Error('Unauthorized to delete this category');
+        }
+
+        await Category.findByIdAndDelete(id);
+
+        return {
+          message: 'Category deleted successfully',
+          status: 200,
+          data: id,
+        } as ApiResponse<typeof category>;
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        throw new Error(`Failed to delete category: ${errorMessage}`);
+      }
+    }),
+
+  updateCategory: protectedProcedure
+    .input(categoryValidation.updateCategorySchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { id, title } = input;
+        const sessionUser = ctx.user as JwtPayload;
+
+        if (!sessionUser?.email) {
+          throw new Error('Authentication required');
+        }
+
+        const existingCategory = await Category.findById(id);
+        if (!existingCategory) {
+          throw new Error('Category not found');
+        }
+
+        if (existingCategory.creator_id.toString() !== sessionUser.id) {
+          throw new Error('Unauthorized to update this category');
+        }
+
+        const duplicateName = await Category.findOne({
+          title,
+          _id: { $ne: id },
+        });
+        if (duplicateName) {
+          throw new Error('Category with this name already exists');
+        }
+
+        const updatedCategory = await Category.findByIdAndUpdate(
+          id,
+          {
+            title,
+          },
+          { new: true }
+        );
+
+        return {
+          message: 'Category updated successfully',
+          status: 200,
+          category: updatedCategory,
+        };
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        throw new Error(`Failed to update category: ${errorMessage}`);
+      }
+    }),
+
   createCategory: protectedProcedure
     .input(categoryValidation.categorySchema)
     .mutation(async ({ ctx, input }) => {
-      const { name } = input;
+      try {
+        const { title } = input;
+        const sessionUser = ctx.user as JwtPayload;
 
-      const sessionUser = ctx.user as JwtPayload;
-      if (!sessionUser || !sessionUser?.email) {
-        throw new Error('You must be logged in to update this data.');
+        if (!sessionUser || !sessionUser?.email) {
+          throw new Error('You must be logged in to update this data.');
+        }
+
+        const categoryExist = await Category.findOne({
+          title,
+          creator_id: sessionUser.id,
+        });
+        if (categoryExist) {
+          throw new Error('Category already exists!');
+        }
+
+        const category = new Category({
+          title,
+          creator_id: sessionUser.id,
+        });
+
+        await category.save();
+
+        if (!category) {
+          throw new Error('Failed to create category');
+        }
+
+        return {
+          message: 'New Category created successfully',
+          status: 200,
+          data: category,
+        } as ApiResponse<typeof category>;
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        throw new Error(`Failed to create category: ${errorMessage}`);
       }
-
-      const category = new Category({
-        name,
-        creator_id: sessionUser.id,
-      });
-      await category.save();
-
-      if (!category) {
-        throw new Error('Category not found');
-      }
-
-      return category;
     }),
 });
