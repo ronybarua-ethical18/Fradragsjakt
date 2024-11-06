@@ -6,7 +6,7 @@ const ruleSchema = z.object({
     required_error: 'Expense type is required',
   }),
   category: z.string({
-    required_error: 'Category is required', // Updated error message
+    required_error: 'Category is required',
   }),
 });
 
