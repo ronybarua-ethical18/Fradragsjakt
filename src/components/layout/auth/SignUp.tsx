@@ -1,9 +1,11 @@
+// src/components/layout/auth/Register.tsx
 'use client';
 import { signIn, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+// import QuestionariesModal from "@/components/QuestionariesModal";
 import { FormInput } from '@/components/FormInput';
 import { trpc } from '@/utils/trpc';
 import toast from 'react-hot-toast';
@@ -17,10 +19,11 @@ type FormData = {
   lastName: string;
   email: string;
   password: string;
+  /* role: string; */
 };
 
 export default function SignUp() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,20 +31,8 @@ export default function SignUp() {
   const { handleSubmit, control, reset } = useForm<FormData>();
 
   useEffect(() => {
-    if (
-      status === 'authenticated' &&
-      session.user.role &&
-      !session?.user.hasAnswers
-    ) {
-      router.push(`/onboard`);
-    } else if (
-      status === 'authenticated' &&
-      session.user.role &&
-      session?.user.hasAnswers
-    ) {
-      router.push(`/${session?.user.role}/dashboard`);
-    }
-  }, [session, router, status]);
+    if (session?.user.role) router.push(`/${session?.user?.role}/dashboard`);
+  }, [session, router]);
 
   const mutation = trpc.auth.signup.useMutation({
     onSuccess: () => {
@@ -52,17 +43,19 @@ export default function SignUp() {
         }
       );
       reset();
-      setLoading(false);
+      setLoading(false); // Reset loading state on success
     },
     onError: (error) => {
       setError(error.message || 'Failed to register. Please try again.');
-      setLoading(false);
+      setLoading(false); // Reset loading state on error
     },
   });
 
   const onSubmit = (data: FormData) => {
-    setError(null);
-    setLoading(true);
+    setError(null); // Reset error state before submission
+    setLoading(true); // Start loading state
+    console.log(data);
+
     mutation.mutate(data);
   };
 

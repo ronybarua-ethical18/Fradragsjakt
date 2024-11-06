@@ -1,15 +1,12 @@
 // /server/router.ts
-import { router } from './trpc';
-import { userRouter } from './modules/users';
-import { authRouter } from './modules/auth';
-import { rulesRouter } from './modules/rules';
-import { categoryRouter } from './modules/categories';
+import { router } from "./trpc";
+import { userRouter } from "./modules/users";
+import { authRouter } from "./modules/auth";
 
 export const appRouter = router({
   users: userRouter,
   auth: authRouter,
-  rules: rulesRouter,
-  categories: categoryRouter,
+  // Add more routers as necessary
 });
 
 export type AppRouter = typeof appRouter;

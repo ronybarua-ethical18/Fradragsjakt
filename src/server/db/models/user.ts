@@ -9,6 +9,7 @@ const UserSchema: Schema = new Schema<IUser>(
     password: {
       type: String,
       required: function () {
+        // Password is required only for users signing up directly (without OAuth)
         return this.provider === 'credentials';
       },
     },
@@ -21,6 +22,7 @@ const UserSchema: Schema = new Schema<IUser>(
       type: String,
       enum: ['admin', 'auditor', 'customer'],
       default: 'customer',
+      //required: true,
     },
     image: {
       type: String,
@@ -41,6 +43,6 @@ const UserSchema: Schema = new Schema<IUser>(
   { timestamps: true }
 );
 
-const User = mongoose.models.user || mongoose.model<IUser>('user', UserSchema);
+const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 
 export default User;

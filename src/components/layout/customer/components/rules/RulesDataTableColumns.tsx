@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -15,7 +14,6 @@ import {
 
 import ArrowUpDown from '../../../../../../public/sort.png';
 import Image from 'next/image';
-import { transformToUppercase } from '@/utils/helpers/transformToUppercase';
 
 export type Transaction = {
   id: string;
@@ -30,18 +28,18 @@ export const RulesDataTableColumns: ColumnDef<Transaction>[] = [
     accessorKey: 'serialNo',
     header: 'Serial no.',
     cell: ({ row }) => (
-      <div className="text-left pl-4">{`${row.index + 1}.`}</div> // Use row.index for serial number
+      <div className="text-left pl-4">{`${row.getValue('serialNo')}.`}</div>
     ),
   },
   {
-    accessorKey: 'description_contains',
+    accessorKey: 'description',
     header: 'Description Contains',
     cell: ({ row }) => (
-      <div className="text-left">{row.getValue('description_contains')}</div>
+      <div className="text-left">{row.getValue('description')}</div>
     ),
   },
   {
-    accessorKey: 'expense_type',
+    accessorKey: 'expenseType',
     header: ({ column }) => {
       return (
         <Button
@@ -54,36 +52,23 @@ export const RulesDataTableColumns: ColumnDef<Transaction>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const initialValue = row.getValue('expense_type') as string;
-
-      // console.log("initial value", initialValue)
-      // const [selectedOption, setSelectedOption] = useState<string>(initialValue);
-
-      return (
-        <Select
-          value={initialValue}
-          onValueChange={(value) => {
-            // setSelectedOption(value);
-            console.log('Updated expense type:', value);
-            // Add any additional logic to persist the change here if needed
-          }}
-        >
-          <SelectTrigger className="w-[120px] text-foreground">
-            <SelectValue>{transformToUppercase(initialValue)}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="Business">Business</SelectItem>
-              <SelectItem value="Personal">Personal</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      );
-    },
+    cell: ({ row }) => (
+      <Select
+        defaultValue={row.getValue('expenseType')}
+        onValueChange={(value) => console.log('Updated expense type:', value)}
+      >
+        <SelectTrigger className="w-[120px]">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Private">Private</SelectItem>
+          <SelectItem value="Public">Public</SelectItem>
+        </SelectContent>
+      </Select>
+    ),
   },
   {
-    accessorKey: 'category_title',
+    accessorKey: 'category',
     header: ({ column }) => {
       return (
         <Button
@@ -99,7 +84,7 @@ export const RulesDataTableColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => (
       <Input
         type="text"
-        defaultValue={transformToUppercase(row.getValue('category_title'))}
+        defaultValue={row.getValue('category')}
         className="w-[150px]"
         onChange={(e) => console.log('Updated category:', e.target.value)}
       />

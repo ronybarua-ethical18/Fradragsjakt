@@ -9,15 +9,14 @@ import { JWT } from 'next-auth/jwt';
 
 declare module 'next-auth' {
   interface User {
-    id: string;
-    role: string;
+    id: string; // Include your user ID type
+    role: string; // Include your user role type
     firstName: string;
     lastName: string;
-    hasAnswers: boolean;
   }
 
   interface Session {
-    user: User;
+    user: User; // Extend the user interface to include your custom properties
   }
 }
 
@@ -32,12 +31,15 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        // Type the credentials parameter correctly
         if (!credentials || !credentials.email || !credentials.password) {
           throw new Error('Invalid credentials');
         }
+
         await connectToDatabase();
         const user = await User.findOne({ email: credentials.email });
 
+        // If user does not exist, log and return null
         if (!user) {
           throw new Error('User not found');
         }
@@ -57,7 +59,7 @@ export const authOptions: AuthOptions = {
             return user;
           }
         }
-        return null;
+        return null; // If credentials are invalid, return null
       },
     }),
     GoogleProvider({
@@ -70,7 +72,7 @@ export const authOptions: AuthOptions = {
     signIn: '/login',
   },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt', // Use JWT instead of sessions
   },
   callbacks: {
     async signIn({
@@ -83,6 +85,8 @@ export const authOptions: AuthOptions = {
     }): Promise<boolean> {
       if (account?.provider === 'google') {
         await connectToDatabase();
+
+        console.log('google account user', user);
         try {
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
@@ -105,22 +109,19 @@ export const authOptions: AuthOptions = {
       }
 
       if (account?.provider === 'credentials') {
-        return true;
+        return true; // Credentials are already verified
       }
 
       return false;
     },
     async jwt({ token, user }) {
+      // Attach user information to the JWT token
       if (user) {
-        const retrievedUser = await User.findOne({ email: user.email });
-        if (retrievedUser) {
-          token.id = retrievedUser.id;
-          token.email = retrievedUser.email;
-          token.firstName = retrievedUser.firstName || user.name;
-          token.lastName = retrievedUser.lastName;
-          token.role = retrievedUser.role || 'customer';
-          token.hasAnswers = retrievedUser.questionnaires?.length > 0;
-        }
+        token.id = user.id;
+        token.email = user.email;
+        token.firstName = user.firstName || user.name;
+        token.lastName = user.lastName;
+        token.role = user.role || 'customer';
       }
       return token;
     },
@@ -131,13 +132,13 @@ export const authOptions: AuthOptions = {
       session: Session;
       token: JWT;
     }): Promise<Session> {
+      // Attach user info to the session object
       session.user = {
         id: token.id as string,
         role: (token.role as string) || 'customer',
         email: token.email as string,
         firstName: (token.firstName as string) || token.name || '',
         lastName: (token.lastName as string) || '',
-        hasAnswers: token.hasAnswers as boolean,
       };
 
       return session;

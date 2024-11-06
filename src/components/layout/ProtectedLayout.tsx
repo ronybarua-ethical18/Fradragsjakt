@@ -1,8 +1,10 @@
 'use client';
+
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Sidebar from '../Sidebar';
 import { useRouter } from 'next/navigation';
+import Loading from '@/app/loading';
 import Topbar from '../Topbar';
 
 interface ProtectedLayoutProps {
@@ -14,14 +16,17 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (status !== 'authenticated') {
+    if (!user || status !== 'authenticated') {
       router.push('/login');
     }
     if (status === 'loading') return;
-  }, [status, router]);
+  }, [status, router, user]);
 
   return (
     <div className="h-screen fixed w-full">
+      {status === 'loading' && (
+        <Loading size="extra_large"> Loading...</Loading>
+      )}
       <div>
         <Topbar role={user?.user?.role || ''} />
         <div className="grid bg-[#EEF0F4]  h-[calc(100vh-60px)] gap-8 w-full md:grid-cols-[250px_1fr] lg:grid-cols-[250px_1fr] px-8 lg:px-[128px]">

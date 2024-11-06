@@ -93,9 +93,7 @@ export default function QuestionnairesStepper({
               </label>
             ))}
           </div>
-          <div
-            className={`flex ${currentStepIndex > 0 && 'space-x-2'} w-full justify-between, `}
-          >
+          <div className="flex space-x-2 w-full justify-between">
             {currentStepIndex > 0 ? (
               <Button
                 type="button"

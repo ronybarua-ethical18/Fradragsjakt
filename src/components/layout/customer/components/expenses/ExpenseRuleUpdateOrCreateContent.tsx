@@ -1,74 +1,27 @@
+// import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { FormInput } from '@/components/FormInput';
 import { useForm } from 'react-hook-form';
-import { trpc } from '@/utils/trpc';
-import toast from 'react-hot-toast';
 
-// Define the form data type to match the expected fields
-type RuleFormData = {
-  description_contains: string;
-  expense_type: 'business' | 'personal';
-  category: string;
-};
-
-type CategoryType = { title: string; value: string };
-
-type ExpenseRuleContentProps = {
-  modalClose?: (open: boolean) => void;
-  categories?: CategoryType[];
-};
-
-function ExpenseRuleUpdateOrCreateContent({
-  modalClose,
-  categories = [],
-}: ExpenseRuleContentProps) {
-  const { handleSubmit, control } = useForm<RuleFormData>({
-    defaultValues: { expense_type: 'business' }, // Optional default value
-  });
-
-  const utils = trpc.useContext();
-  const ruleMutation = trpc.rules.createRule.useMutation({
-    onSuccess: () => {
-      toast.success('Rule created successfully');
-      if (modalClose) {
-        modalClose(false);
-      }
-      utils.rules.getRules.invalidate(); // Invalidate and refetch getRules query
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-
-  const onSubmit = (data: RuleFormData) => {
-    ruleMutation.mutate(data);
-  };
-
-  const defaultCategories = [
-    { title: 'Transport', value: 'Transport' },
-    { title: 'Meals', value: 'Meals' },
-    { title: 'Gas', value: 'Gas' },
-  ];
-
-  const manipulatedCategories = Array.from(
-    new Map(
-      [...categories, ...defaultCategories].map((cat) => [cat.value, cat])
-    ).values()
-  );
+function ExpenseRuleUpdateOrCreateContent() {
+  const { handleSubmit, control } = useForm<FormData>();
 
   return (
     <div>
       <h1 className="font-bold text-xl text-[#5B52F9] mb-4">IF</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(() => {})} className="space-y-4">
         <div>
-          <Label htmlFor="description_contains">Description contain</Label>
+          <Label htmlFor="description">Description contain</Label>
           <FormInput
             type="text"
-            name="description_contains"
+            name="description-contain"
+            // id="description"
             placeholder="Description contain"
             control={control}
+            //   value={email}
+            //   onChange={(e) => setEmail(e.target.value)}
             customClassName="w-full mt-2"
             required
           />
@@ -76,16 +29,16 @@ function ExpenseRuleUpdateOrCreateContent({
 
         <h1 className="font-bold text-xl text-[#5B52F9] mb-4">Then</h1>
         <div>
-          <Label htmlFor="expense_type">Expense type</Label>
+          <Label htmlFor="expense-type">Expense type</Label>
           <FormInput
-            name="expense_type"
+            name="expense-type"
             customClassName="w-full mt-2"
             type="select"
             control={control}
             placeholder="Select type"
             options={[
-              { title: 'Business', value: 'business' },
-              { title: 'Personal', value: 'personal' },
+              { title: 'Transport', value: 'transport' },
+              { title: 'Meals', value: 'meals' },
             ]}
             required
           />
@@ -98,20 +51,29 @@ function ExpenseRuleUpdateOrCreateContent({
             type="select"
             control={control}
             placeholder="Select category"
-            options={manipulatedCategories}
+            options={[
+              { title: 'Transport', value: 'transport' },
+              { title: 'Meals', value: 'meals' },
+            ]}
             required
           />
         </div>
 
         <div className="py-3">
-          <Button type="submit" className="w-full text-white">
+          <Button
+            // disabled={loading || status === 'loading'} // Disable button during loading
+            type="submit"
+            className="w-full text-white"
+          >
+            {/* {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
             Apply Update
           </Button>
           <Button
-            type="button" // Change to button to avoid form submission
+            // disabled={loading || status === 'loading'} // Disable button during loading
+            type="submit"
             className="w-full bg-[#F0EFFE] text-[#FF4444] hover:bg-[#F0EFFE] mt-3"
-            onClick={() => modalClose && modalClose(false)} // Close modal on discard
           >
+            {/* {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
             Discard
           </Button>
         </div>
