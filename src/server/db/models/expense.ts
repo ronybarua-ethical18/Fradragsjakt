@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { ExpenseType, IExpense } from '../interfaces/expense';
+import { DeductionStatus, ExpenseType, IExpense } from '../interfaces/expense';
 
 const ExpenseSchema = new Schema<IExpense>(
   {
@@ -21,6 +21,11 @@ const ExpenseSchema = new Schema<IExpense>(
     amount: {
       type: Number,
       required: true,
+    },
+    deduction_status: {
+      type: String,
+      enum: Object.values(DeductionStatus),
+      default: DeductionStatus.non_deductible,
     },
     user: {
       type: Schema.Types.ObjectId,
