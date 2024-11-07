@@ -78,7 +78,7 @@ export const expenseRouter = router({
       }
     }),
   createBulkExpenses: protectedProcedure
-    .input(expenseValidation.createExpenseSchema)
+    .input(expenseValidation.createBulkExpenseSchema)
     .mutation(async ({ ctx }) => {
       try {
         const loggedUser = ctx.user as JwtPayload;
