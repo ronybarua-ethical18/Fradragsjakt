@@ -35,7 +35,7 @@ const ExpenseSchema = new Schema<IExpense>(
     rule: {
       type: Schema.Types.ObjectId,
       ref: 'rule',
-      required: true,
+      //required: true,
     },
   },
   {
