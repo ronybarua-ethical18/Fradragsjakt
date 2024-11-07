@@ -57,15 +57,9 @@ export const expenseRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const loggedUser = ctx.user as JwtPayload;
-        const { description } = input;
 
-        const rule = await ExpenseHelpers.findMatchingRule(
-          description,
-          loggedUser.id
-        );
         const expense = await ExpenseHelpers.createExpenseRecord(
           input as IExpense,
-          rule,
           loggedUser.id
         );
 
@@ -96,14 +90,9 @@ export const expenseRouter = router({
           { description: 'Charity', amount: 500 },
         ];
 
-        for (const sigleExpense of expenses) {
-          const rule = await ExpenseHelpers.findMatchingRule(
-            sigleExpense.description,
-            loggedUser.id
-          );
+        for (const singleExpense of expenses) {
           await ExpenseHelpers.createExpenseRecord(
-            input as IExpense,
-            rule,
+            singleExpense as IExpense,
             loggedUser.id
           );
         }
