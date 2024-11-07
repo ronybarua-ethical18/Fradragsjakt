@@ -10,7 +10,8 @@ import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
 import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
 import SharedModal from '../../../../SharedModal';
-import ExpenseUploadStatementContent from './ExpenseUploadStatementContent';
+import ExpenseUploadContent from './ExpenseUploadContent';
+import { trpc } from '@/utils/trpc';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -18,13 +19,31 @@ const buttons = [
   { text: 'Show Write-offs', icon: WriteOffIcon },
 ];
 
-function ExpenseOverviewHeading() {
+function ExpenseOverviewHeading({}) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<{
     title: string;
   }>({
     title: '',
   });
+
+  const { data: categories } = trpc.categories.getCategories.useQuery(
+    {
+      page: 1,
+      limit: 50,
+    },
+    {
+      keepPreviousData: true,
+    }
+  );
+  const manipulateCategories = categories?.data
+    ? categories?.data?.map((category) => {
+        return {
+          title: category.title,
+          value: category.title,
+        };
+      })
+    : [];
 
   const handleButtonClick = (title: string) => {
     setModalContent({ title });
@@ -33,13 +52,16 @@ function ExpenseOverviewHeading() {
 
   const renderContent = () => {
     return modalContent.title === 'Add expense' ? (
-      <ExpenseAddContent />
+      <ExpenseAddContent
+        setModalOpen={setModalOpen}
+        categories={manipulateCategories}
+      />
     ) : modalContent.title === 'Rule' ? (
       <ExpenseRuleUpdateOrCreateContent />
     ) : modalContent.title === 'Show Write-offs' ? (
       <ExpenseWriteOffSummary />
     ) : modalContent.title === 'Upload statements' ? (
-      <ExpenseUploadStatementContent />
+      <ExpenseUploadContent />
     ) : (
       <></>
     );

@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { transformToUppercase } from '@/utils/helpers/transformToUppercase';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -60,8 +61,13 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'createdAt',
     header: 'Date',
+    cell: ({ row }) => {
+      return (
+        <span className="text-[#00104B]">{row.getValue('createdAt')}</span>
+      );
+    },
   },
   {
     accessorKey: 'description',
@@ -98,7 +104,7 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {['Transport', 'Meals', 'Travel', 'Meals'].map((_, i) => (
+            {['Transport', 'Meals', 'Travel'].map((_, i) => (
               <SelectItem key={i} value={_}>
                 {_}
               </SelectItem>
@@ -109,7 +115,7 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
     },
   },
   {
-    accessorKey: 'expenseType',
+    accessorKey: 'expense_type',
     header: ({ column }) => {
       return (
         <Button
@@ -123,7 +129,7 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
       );
     },
     cell: ({ row }) => {
-      const defaultType = row.getValue('expenseType') as string;
+      const defaultType = row.getValue('expense_type') as string;
       return (
         <Select
           defaultValue={defaultType}
@@ -133,9 +139,9 @@ export const expenseDataTableColumns: ColumnDef<ExpenseColumnProps>[] = [
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {['Don’t know', 'Personal', 'Business'].map((_, i) => (
-              <SelectItem key={i} value={_}>
-                {_}
+            {['unknown', 'personal', 'business'].map((type, i) => (
+              <SelectItem key={i} value={type}>
+                {transformToUppercase(type)}
               </SelectItem>
             ))}
           </SelectContent>
