@@ -88,7 +88,6 @@ function ExpenseOverviewHeading() {
         </div>
       </div>
 
-      {/* ExpenseModal component */}
       <div className="bg-white z-50">
         <SharedModal
           open={isModalOpen}

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { FormInput } from '@/components/FormInput';
 
-// Define types for our data structures
 type FormData = {
   Description: string;
   Amount: string;
@@ -43,6 +42,7 @@ const fixed_columns: ColumnType[] = [
 const ExpenseUploadStatementContent: React.FC = () => {
   const { handleSubmit, control } = useForm<FormData>();
   const [csvData, setCsvData] = useState<CSVRowData[]>([]);
+  console.log('csvData__', csvData);
   const [mappedData, setMappedData] = useState<MappedDataType[]>([]);
   console.log('mappedData__', mappedData);
 
@@ -57,39 +57,59 @@ const ExpenseUploadStatementContent: React.FC = () => {
 
     setColumns(csvColumns);
 
-    const processedData: CSVRowData[] = data.slice(1).map((row, rowIndex) => {
-      return row.slice(1).reduce(
-        (acc: CSVRowData, val: string, colIndex: number) => {
-          acc[`column_${colIndex}`] = val;
-          return acc;
-        },
-        { key: `row_${rowIndex}` }
-      );
-    });
+    const processedData: CSVRowData[] = data
+      .slice(1)
+      .filter((row) => {
+        return row.slice(1).some((cell) => cell && cell.trim() !== '');
+      })
+      .map((row, rowIndex) => {
+        const processedRow = row.slice(1).reduce(
+          (acc: CSVRowData, val: string, colIndex: number) => {
+            if (val && val.trim() !== '') {
+              acc[`column_${colIndex}`] = val.trim();
+            }
+            return acc;
+          },
+          { key: `row_${rowIndex}` }
+        );
+
+        return Object.keys(processedRow).length > 1 ? processedRow : null;
+      })
+      .filter((row): row is CSVRowData => row !== null);
 
     setCsvData(processedData);
   };
 
   const onSubmit = (formData: FormData): void => {
-    const mapped: MappedDataType[] = csvData.map((row) => {
-      const descriptionColumnIndex = columns.findIndex(
-        (col) => col.title === formData.Description
-      );
-      const amountColumnIndex = columns.findIndex(
-        (col) => col.title === formData.Amount
-      );
+    const mapped: MappedDataType[] = csvData
+      .map((row) => {
+        const descriptionColumnIndex = columns.findIndex(
+          (col) => col.title === formData.Description
+        );
+        const amountColumnIndex = columns.findIndex(
+          (col) => col.title === formData.Amount
+        );
 
-      return {
-        description: row[`column_${descriptionColumnIndex}`],
-        amount: parseFloat(row[`column_${amountColumnIndex}`]) || 0,
-      };
-    });
+        const description = row[`column_${descriptionColumnIndex}`];
+        const amount = row[`column_${amountColumnIndex}`];
+
+        if (description && amount) {
+          const parsedAmount = parseFloat(amount.replace(/[^\d.-]/g, ''));
+          if (!isNaN(parsedAmount)) {
+            return {
+              description: description.trim(),
+              amount: parsedAmount,
+            };
+          }
+        }
+        return null;
+      })
+      .filter((item): item is MappedDataType => item !== null);
 
     setMappedData(mapped);
     console.log('Mapped Data:', mapped);
   };
 
-  // Memoize options to prevent unnecessary re-renders
   const columnOptions = React.useMemo(
     () =>
       columns.map((column) => ({
@@ -142,6 +162,7 @@ const ExpenseUploadStatementContent: React.FC = () => {
           type="submit"
           className="w-full mt-4 text-white"
           variant="purple"
+          disabled={csvData.length === 0}
         >
           Map
         </Button>
