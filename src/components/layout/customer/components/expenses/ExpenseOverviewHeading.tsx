@@ -10,7 +10,7 @@ import ExpenseAddContent from './ExpenseAddContent';
 import ExpenseRuleUpdateOrCreateContent from './ExpenseRuleUpdateOrCreateContent';
 import ExpenseWriteOffSummary from './ExpenseWriteOffSummary';
 import SharedModal from '../../../../SharedModal';
-import ExpenseUploadStatementContent from './ExpenseUploadStatementContent';
+import ExpenseUploadContent from './ExpenseUploadContent';
 
 const buttons = [
   { text: 'Filter By', icon: FilterIcon },
@@ -39,7 +39,7 @@ function ExpenseOverviewHeading() {
     ) : modalContent.title === 'Show Write-offs' ? (
       <ExpenseWriteOffSummary />
     ) : modalContent.title === 'Upload statements' ? (
-      <ExpenseUploadStatementContent />
+      <ExpenseUploadContent />
     ) : (
       <></>
     );
