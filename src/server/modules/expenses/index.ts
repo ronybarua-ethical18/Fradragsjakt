@@ -8,6 +8,7 @@ import ExpenseModel from '@/server/db/models/expense';
 import { ApiError } from '@/lib/exceptions';
 import { expenseValidation } from './expenses.validation';
 import { ExpenseHelpers } from '@/server/helpers/expense';
+import { IExpense } from '@/server/db/interfaces/expense';
 
 export const expenseRouter = router({
   getExpenses: protectedProcedure
@@ -63,7 +64,7 @@ export const expenseRouter = router({
           loggedUser.id
         );
         const expense = await ExpenseHelpers.createExpenseRecord(
-          input,
+          input as IExpense,
           rule,
           loggedUser.id
         );
@@ -100,7 +101,11 @@ export const expenseRouter = router({
             sigleExpense.description,
             loggedUser.id
           );
-          await ExpenseHelpers.createExpenseRecord(input, rule, loggedUser.id);
+          await ExpenseHelpers.createExpenseRecord(
+            input as IExpense,
+            rule,
+            loggedUser.id
+          );
         }
 
         return {
