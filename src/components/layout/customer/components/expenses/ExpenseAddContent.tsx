@@ -4,10 +4,17 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { FormInput } from '@/components/FormInput';
 import { useForm } from 'react-hook-form';
-import { FormData } from './ExpenseOverviewSection';
 import { trpc } from '@/utils/trpc';
 import toast from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
 
+export type FormData = {
+  description: string;
+  expense_type: 'Unknown' | 'Personal' | 'Business';
+  category: string;
+  deduction_status: string;
+  amount: number;
+};
 const defaultCategories = [
   { title: 'Transport', value: 'Transport' },
   { title: 'Meals', value: 'Meals' },
@@ -20,9 +27,11 @@ interface ExpenseAddContentProps {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   categories?: CategoryType[];
 }
-function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
+function ExpenseAddContent({
+  categories = [],
+  setModalOpen,
+}: ExpenseAddContentProps) {
   const { handleSubmit, control, reset } = useForm<FormData>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
   const utils = trpc.useUtils();
 
@@ -34,15 +43,16 @@ function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
 
   const mutation = trpc.expenses.createExpense.useMutation({
     onSuccess: () => {
-      toast.success('Category created successfully!', {
+      toast.success('Expense created successfully!', {
         duration: 4000,
       });
-      utils.categories.getCategories.invalidate();
+      utils.expenses.getExpenses.invalidate();
       reset();
+      setModalOpen(false);
       setLoading(false);
     },
     onError: (error) => {
-      toast.error(error.message || 'Failed to create category');
+      toast.error(error.message || 'Failed to create expense');
       setLoading(false);
     },
   });
@@ -63,11 +73,8 @@ function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
           <FormInput
             type="text"
             name="description"
-            // id="description"
             placeholder="Description"
             control={control}
-            //   value={email}
-            //   onChange={(e) => setEmail(e.target.value)}
             customClassName="w-full mt-2"
             required
           />
@@ -81,9 +88,9 @@ function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
             control={control}
             placeholder="Select type"
             options={[
-              { title: 'Business', value: 'business' },
-              { title: 'Personal', value: 'personal' },
-              { title: 'Unknown', value: 'unknown' },
+              { title: 'Business', value: 'Business' },
+              { title: 'Personal', value: 'Personal' },
+              { title: 'Unknown', value: 'Unknown' },
             ]}
             required
           />
@@ -105,11 +112,8 @@ function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
           <FormInput
             type="number"
             name="amount"
-            // id="description"
             placeholder="Amount"
             control={control}
-            //   value={email}
-            //   onChange={(e) => setEmail(e.target.value)}
             customClassName="w-full mt-2"
             required
           />
@@ -131,19 +135,14 @@ function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
         </div>
         <div className="py-3">
           <Button
-            // disabled={loading || status === 'loading'} // Disable button during loading
+            disabled={loading}
             type="submit"
             className="w-full text-white"
           >
-            {/* {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Add Expense
           </Button>
-          <Button
-            // disabled={loading || status === 'loading'} // Disable button during loading
-            type="submit"
-            className="w-full bg-[#F0EFFE] text-[#FF4444] hover:bg-[#F0EFFE] mt-3"
-          >
-            {/* {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} */}
+          <Button className="w-full bg-[#F0EFFE] text-[#FF4444] hover:bg-[#F0EFFE] mt-3">
             Discard
           </Button>
         </div>

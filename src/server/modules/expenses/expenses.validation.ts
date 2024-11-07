@@ -4,7 +4,7 @@ const createExpenseSchema = z.object({
   description: z.string({
     required_error: 'Description is required',
   }),
-  expense_type: z.enum(['personal', 'business', 'unknown'], {
+  expense_type: z.enum(['Personal', 'Business', 'Unknown'], {
     required_error: 'Expense type is required',
   }),
   category: z.string({
