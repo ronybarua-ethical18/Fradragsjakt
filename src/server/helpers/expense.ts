@@ -9,7 +9,7 @@ async function findMatchingRule(description: string, userId: string) {
   try {
     return await RuleModel.findOne({
       $or: [
-        { description: { $regex: description, $options: 'i' } },
+        { description_contains: { $regex: description, $options: 'i' } },
         { category_title: { $regex: description, $options: 'i' } },
       ],
       user: userId,
