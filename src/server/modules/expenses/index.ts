@@ -7,7 +7,8 @@ import { z } from 'zod';
 import ExpenseModel from '@/server/db/models/expense';
 import { ApiError } from '@/lib/exceptions';
 import { expenseValidation } from './expenses.validation';
-import RuleModel from '@/server/db/models/rules';
+import { ExpenseHelpers } from '@/server/helpers/expense';
+import { IExpense } from '@/server/db/interfaces/expense';
 
 export const expenseRouter = router({
   getExpenses: protectedProcedure
@@ -58,23 +59,59 @@ export const expenseRouter = router({
         const loggedUser = ctx.user as JwtPayload;
         const { description } = input;
 
-        const rule = await RuleModel.findOne({
-          description_contains: { $regex: description, $options: 'i' },
-          user: loggedUser.id,
-        });
-
-        const expense = await ExpenseModel.create({
-          ...input,
-          user: loggedUser.id,
-          expense_type: rule?.expense_type || input.expense_type,
-          category: rule?.category || input.category,
-        });
+        const rule = await ExpenseHelpers.findMatchingRule(
+          description,
+          loggedUser.id
+        );
+        const expense = await ExpenseHelpers.createExpenseRecord(
+          input as IExpense,
+          rule,
+          loggedUser.id
+        );
 
         return {
           status: 201,
           message: 'Expense created successfully',
           data: expense,
         } as ApiResponse<typeof expense>;
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          `Failed to create expense: ${errorMessage}`
+        );
+      }
+    }),
+  createBulkExpenses: protectedProcedure
+    .input(expenseValidation.createExpenseSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const loggedUser = ctx.user as JwtPayload;
+        console.log('input', input);
+
+        const expenses = [
+          { description: 'Foodpanda', amount: 20 },
+          { description: 'Dhaka to Chittagong', amount: 100 },
+          { description: 'Charity', amount: 500 },
+        ];
+
+        for (const sigleExpense of expenses) {
+          const rule = await ExpenseHelpers.findMatchingRule(
+            sigleExpense.description,
+            loggedUser.id
+          );
+          await ExpenseHelpers.createExpenseRecord(
+            input as IExpense,
+            rule,
+            loggedUser.id
+          );
+        }
+
+        return {
+          status: 201,
+          message: 'Expense created successfully',
+        } as ApiResponse<typeof expenses>;
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : 'An unknown error occurred';
