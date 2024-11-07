@@ -7,11 +7,10 @@ import { ContentHobby } from './components/write-offs/modals-content/ContentHobb
 import { ContentWork } from './components/write-offs/modals-content/ContentWork';
 import { FilterContent } from './components/expenses/ExpenseFilterContent';
 import { HeaderMappingModal } from './components/expenses/ExpenseMappingModal';
-import VerifyEmail from './components/email/VerifyEmail';
 
 export default function Testmodal() {
   return (
-    <div className="flex flex-col gap-2 m-2">
+    <div className="flex flex-col border border-gray-300 divide-y divide-gray-300">
       <ContentBank />
       <ContentDonation />
       <ContentForeignIncome />
@@ -20,7 +19,6 @@ export default function Testmodal() {
       <ContentWork />
       <FilterContent />
       <HeaderMappingModal />
-      <VerifyEmail />
     </div>
   );
 }
