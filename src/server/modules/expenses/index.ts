@@ -79,34 +79,38 @@ export const expenseRouter = router({
     }),
   createBulkExpenses: protectedProcedure
     .input(expenseValidation.createExpenseSchema)
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx }) => {
       try {
         const loggedUser = ctx.user as JwtPayload;
-        console.log('input', input);
 
+        // Array of expenses to be created in bulk
         const expenses = [
           { description: 'Foodpanda', amount: 20 },
           { description: 'Dhaka to Chittagong', amount: 100 },
           { description: 'Charity', amount: 500 },
         ];
 
-        for (const singleExpense of expenses) {
-          await ExpenseHelpers.createExpenseRecord(
-            singleExpense as IExpense,
-            loggedUser.id
-          );
-        }
+        // Use Promise.all to handle all expense creations in parallel
+        const createdExpenses = await Promise.all(
+          expenses.map(async (singleExpense) => {
+            return await ExpenseHelpers.createExpenseFromBulkInput(
+              singleExpense,
+              loggedUser.id
+            );
+          })
+        );
 
         return {
           status: 201,
-          message: 'Expense created successfully',
-        } as ApiResponse<typeof expenses>;
+          message: 'Expenses created successfully',
+          data: createdExpenses,
+        } as ApiResponse<typeof createdExpenses>;
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : 'An unknown error occurred';
         throw new ApiError(
           httpStatus.BAD_REQUEST,
-          `Failed to create expense: ${errorMessage}`
+          `Failed to create expenses: ${errorMessage}`
         );
       }
     }),
