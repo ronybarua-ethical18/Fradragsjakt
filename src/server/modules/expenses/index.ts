@@ -7,6 +7,7 @@ import { z } from 'zod';
 import ExpenseModel from '@/server/db/models/expense';
 import { ApiError } from '@/lib/exceptions';
 import { expenseValidation } from './expenses.validation';
+import RuleModel from '@/server/db/models/rules';
 
 export const expenseRouter = router({
   getExpenses: protectedProcedure
@@ -55,8 +56,25 @@ export const expenseRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const loggedUser = ctx.user as JwtPayload;
-        console.log('create expense req body', input);
-        console.log('loggedUser', loggedUser);
+        const { description } = input;
+
+        const rule = await RuleModel.findOne({
+          description_contains: { $regex: description, $options: 'i' },
+          user: loggedUser.id,
+        });
+
+        const expense = await ExpenseModel.create({
+          ...input,
+          user: loggedUser.id,
+          expense_type: rule?.expense_type || input.expense_type,
+          category: rule?.category || input.category,
+        });
+
+        return {
+          status: 201,
+          message: 'Expense created successfully',
+          data: expense,
+        } as ApiResponse<typeof expense>;
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : 'An unknown error occurred';
