@@ -1,19 +1,63 @@
 // import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { FormInput } from '@/components/FormInput';
 import { useForm } from 'react-hook-form';
+import { FormData } from './ExpenseOverviewSection';
+import { trpc } from '@/utils/trpc';
+import toast from 'react-hot-toast';
 
-function ExpenseAddContent() {
-  const { handleSubmit, control } = useForm<FormData>();
+const defaultCategories = [
+  { title: 'Transport', value: 'Transport' },
+  { title: 'Meals', value: 'Meals' },
+  { title: 'Gas', value: 'Gas' },
+];
 
+type CategoryType = { title: string; value: string };
+
+interface ExpenseAddContentProps {
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  categories?: CategoryType[];
+}
+function ExpenseAddContent({ categories = [] }: ExpenseAddContentProps) {
+  const { handleSubmit, control, reset } = useForm<FormData>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(false);
+  const utils = trpc.useUtils();
+
+  const manipulatedCategories = Array.from(
+    new Map(
+      [...categories, ...defaultCategories].map((cat) => [cat.value, cat])
+    ).values()
+  );
+
+  const mutation = trpc.expenses.createExpense.useMutation({
+    onSuccess: () => {
+      toast.success('Category created successfully!', {
+        duration: 4000,
+      });
+      utils.categories.getCategories.invalidate();
+      reset();
+      setLoading(false);
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to create category');
+      setLoading(false);
+    },
+  });
+  const onSubmit = (data: FormData) => {
+    console.log('expense_data', data);
+
+    setLoading(true);
+    mutation.mutate({ ...data, amount: Number(data?.amount) });
+  };
   return (
     <div>
       <h1 className="font-bold text-xl text-[#5B52F9] mb-4">
         Manually add expense
       </h1>
-      <form onSubmit={handleSubmit(() => {})} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Label htmlFor="description">Description</Label>
           <FormInput
@@ -31,14 +75,15 @@ function ExpenseAddContent() {
         <div>
           <Label htmlFor="expense-type">Expense type</Label>
           <FormInput
-            name="expense-type"
+            name="expense_type"
             customClassName="w-full mt-2"
             type="select"
             control={control}
             placeholder="Select type"
             options={[
-              { title: 'Transport', value: 'transport' },
-              { title: 'Meals', value: 'meals' },
+              { title: 'Business', value: 'business' },
+              { title: 'Personal', value: 'personal' },
+              { title: 'Unknown', value: 'unknown' },
             ]}
             required
           />
@@ -51,10 +96,7 @@ function ExpenseAddContent() {
             type="select"
             control={control}
             placeholder="Select category"
-            options={[
-              { title: 'Transport', value: 'transport' },
-              { title: 'Meals', value: 'meals' },
-            ]}
+            options={manipulatedCategories}
             required
           />
         </div>
@@ -75,7 +117,7 @@ function ExpenseAddContent() {
         <div>
           <Label htmlFor="category">Deduction status</Label>
           <FormInput
-            name="status"
+            name="deduction_status"
             customClassName="w-full mt-2"
             type="select"
             control={control}
