@@ -1,9 +1,9 @@
 import { Document, Types } from 'mongoose';
 
 export enum ExpenseType {
-  Business = 'Business',
-  Personal = 'Personal',
-  Unknown = 'Unknown',
+  business = 'business',
+  personal = 'personal',
+  unknown = 'unknown',
 }
 
 export enum DeductionStatus {
